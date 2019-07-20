@@ -1,4 +1,5 @@
 import React from 'react'
+import * as PropTypes from 'prop-types'
 import { Typography, Col, Row, Input, Icon, Badge } from 'antd'
 import { useTranslation } from 'react-i18next'
 
@@ -18,8 +19,22 @@ const titleStyle = {
 
 const SearchIcon = <Icon type="search" />
 
-const HeaderMain = () => {
+const HeaderMain = ({ titleOnly }) => {
   const { t } = useTranslation()
+
+  if (titleOnly) {
+    return (
+      <Row>
+        <Col offset={1} span={22}>
+          <div className={styles.container}>
+            <Title level={3} style={titleStyle}>
+              {process.env.REACT_APP_NAME}
+            </Title>
+          </div>
+        </Col>
+      </Row>
+    )
+  }
 
   return (
     <Row>
@@ -47,6 +62,7 @@ const HeaderMain = () => {
           </div>
         </div>
       </Col>
+
       <Col>
         <Input
           className={styles.searchXs}
@@ -57,6 +73,16 @@ const HeaderMain = () => {
       </Col>
     </Row>
   )
+}
+
+HeaderMain.propTypes = {
+  // if true only title will be shown,
+  // cart and search element will be hidden
+  titleOnly: PropTypes.bool,
+}
+
+HeaderMain.defaultProps = {
+  titleOnly: false,
 }
 
 export default HeaderMain

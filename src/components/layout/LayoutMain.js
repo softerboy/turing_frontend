@@ -8,13 +8,13 @@ import PreHeader from '../header/PreHeader'
 const { Header, Content, Footer } = Layout
 
 const LayoutMain = props => {
-  const { children } = props
+  const { children, auth } = props
 
   return (
     <Layout>
-      <PreHeader />
+      {auth || <PreHeader />}
       <Header style={{ lineHeight: 0 }}>
-        <HeaderMain />
+        <HeaderMain titleOnly={auth} />
       </Header>
       <Content style={{ minHeight: '100vh' }}>{children}</Content>
       <Footer />
@@ -24,10 +24,20 @@ const LayoutMain = props => {
 
 LayoutMain.propTypes = {
   children: PropTypes.element,
+
+  // if true only app title will be shown
+  auth: PropTypes.bool,
 }
 
 LayoutMain.defaultProps = {
   children: null,
+  auth: false,
 }
 
 export default LayoutMain
+
+export const withLayout = options => Component => () => (
+  <LayoutMain {...options}>
+    <Component />
+  </LayoutMain>
+)

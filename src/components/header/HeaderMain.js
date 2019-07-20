@@ -1,5 +1,6 @@
 import React from 'react'
 import { Typography, Col, Row, Input, Icon, Badge } from 'antd'
+import { useTranslation } from 'react-i18next'
 
 import vars from '../../theme/variables'
 import styles from './HeaderMain.module.less'
@@ -18,6 +19,8 @@ const titleStyle = {
 const SearchIcon = <Icon type="search" />
 
 const HeaderMain = () => {
+  const { t } = useTranslation()
+
   return (
     <Row>
       <Col offset={1} span={22}>
@@ -30,7 +33,7 @@ const HeaderMain = () => {
             <Input
               className={styles.search}
               prefix={SearchIcon}
-              placeholder="search anything"
+              placeholder={t('search anything')}
               allowClear
             />
 
@@ -48,7 +51,7 @@ const HeaderMain = () => {
         <Input
           className={styles.searchXs}
           prefix={SearchIcon}
-          placeholder="search anything"
+          placeholder={t('search anything')}
           allowClear
         />
       </Col>

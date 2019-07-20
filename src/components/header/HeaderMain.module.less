@@ -1,0 +1,56 @@
+@white: rgb(255, 255, 255);
+
+.container {
+  display: inline;
+}
+
+.searchMixin {
+  float: left;
+
+  input {
+    border-radius: 18px;
+    height: 36px;
+    background-color: rgb(150, 150, 150);
+    border: none;
+    font-size: 1.1em;
+    padding-left: 35px !important;
+    font-weight: bolder;
+    color: @white;
+
+    &::placeholder {
+      color: @white;
+    }
+  }
+
+  svg {
+    color: rgb(255, 255, 255);
+  }
+}
+
+.search {
+  width: 280px;
+  margin-right: 16px;
+  .searchMixin();
+}
+
+.searchXs {
+  width: 100%;
+  display: none;
+  .searchMixin();
+}
+
+.cart {
+  color: @white;
+  font-size: 1.5em;
+  padding: 8px;
+}
+
+@media only screen and (max-width: 630px) {
+  .search {
+    display: none;
+  }
+
+  .searchXs {
+    display: block;
+  }
+}

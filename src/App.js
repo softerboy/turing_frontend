@@ -1,14 +1,9 @@
-import React, { useState } from 'react'
-import { Button } from 'antd'
+import React from 'react'
+
+import LayoutMain from './components/layout/LayoutMain'
 
 const App = () => {
-  const [count, setCount] = useState(0)
-
-  return (
-    <Button onClick={() => setCount(count + 1)}>
-      You clicked {count} time
-    </Button>
-  )
+  return <LayoutMain />
 }
 
 export default App

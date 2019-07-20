@@ -1,5 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { Button } from 'antd'
 
-const App = () => <h1>Hello world</h1>
+const App = () => {
+  const [count, setCount] = useState(0)
+
+  return (
+    <Button onClick={() => setCount(count + 1)}>
+      You clicked {count} time
+    </Button>
+  )
+}
 
 export default App

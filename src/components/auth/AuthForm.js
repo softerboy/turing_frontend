@@ -50,7 +50,7 @@ const AuthForm = props => {
     }
 
     return (
-      <Row type="flex" justify="space-between">
+      <Row type="flex" justify="space-around">
         <Link to={forgotLink}>{t('Forgot password?')}</Link>
         <Link to={registerLink}>{t('Have an account')}</Link>
       </Row>

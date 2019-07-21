@@ -14,6 +14,21 @@ export const SubmitButton = ({ children }) => (
   </Button>
 )
 
+export const getUsernameField = (fieldDecorator, t) => {
+  return fieldDecorator('username', {
+    rules: [
+      {
+        required: true,
+        message: t('Please input your username'),
+      },
+      {
+        min: 3,
+        message: t('Username length must be at least 3 character'),
+      },
+    ],
+  })(<Input size="large" />)
+}
+
 export const getEmailField = (fieldDecorator, t) => {
   return fieldDecorator('email', {
     rules: [

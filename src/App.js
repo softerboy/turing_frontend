@@ -2,7 +2,7 @@ import React from 'react'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 
 import Home from './pages/Home'
-import Login from './pages/Login'
+import Auth from './pages/Auth'
 
 const App = () => (
   <BrowserRouter>
@@ -13,7 +13,18 @@ const App = () => (
         path={['/', '/home', '/index']}
         component={Home}
       />
-      <Route exact name="login" path="/login" component={Login} />
+      {/*
+        The role of key prop is clear (i.e. rerender)
+        login ind register form fields in every page transition.
+        Without it forms same fields value keeps their
+        value between page transition
+      */}
+      <Route exact name="login" path="/login">
+        <Auth key="login" />
+      </Route>
+      <Route exact name="register" path="/register">
+        <Auth key="register" register />
+      </Route>
     </Switch>
   </BrowserRouter>
 )

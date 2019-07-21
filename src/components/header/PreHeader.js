@@ -1,14 +1,9 @@
 import React from 'react'
 import { Col, Row, Typography } from 'antd'
 import { useTranslation } from 'react-i18next'
-
-import vars from '../../theme/variables'
+import { Link } from 'react-router-dom'
 
 const { Text } = Typography
-
-const linkStyle = {
-  color: vars['@primary-color'],
-}
 
 const PreHeader = () => {
   const { t } = useTranslation()
@@ -17,10 +12,10 @@ const PreHeader = () => {
     <Row>
       <Col offset={1} span={22} style={{ padding: 8 }}>
         <Text strong style={{ margin: 0 }}>
-          <Text>{t('Hi!')}</Text>
-          <Text style={linkStyle}>{t('Sign in')}</Text>
-          <Text>{t('or')}</Text>
-          <Text style={linkStyle}>{t('Register')}</Text>
+          {t('Hi!')}
+          <Link to="/login">{t('Sign in')}</Link>
+          {t('or')}
+          <Link to="/register">{t('Register')}</Link>
         </Text>
       </Col>
     </Row>

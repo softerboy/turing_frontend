@@ -2,6 +2,7 @@ import React from 'react'
 import * as PropTypes from 'prop-types'
 import { Typography, Col, Row, Input, Icon, Badge } from 'antd'
 import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router-dom'
 
 import vars from '../../theme/variables'
 import styles from './HeaderMain.module.less'
@@ -28,7 +29,7 @@ const HeaderMain = ({ titleOnly }) => {
         <Col offset={1} span={22}>
           <div className={styles.container}>
             <Title level={3} style={titleStyle}>
-              {process.env.REACT_APP_NAME}
+              <Link to="/">{process.env.REACT_APP_NAME}</Link>
             </Title>
           </div>
         </Col>
@@ -41,7 +42,7 @@ const HeaderMain = ({ titleOnly }) => {
       <Col offset={1} span={22}>
         <div className={styles.container}>
           <Title level={3} style={titleStyle}>
-            {process.env.REACT_APP_NAME}
+            <Link to="/">{process.env.REACT_APP_NAME}</Link>
           </Title>
 
           <div style={{ float: 'right' }}>

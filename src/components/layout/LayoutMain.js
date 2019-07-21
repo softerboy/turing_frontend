@@ -36,8 +36,8 @@ LayoutMain.defaultProps = {
 
 export default LayoutMain
 
-export const withLayout = options => Component => () => (
+export const withLayout = options => Component => props => (
   <LayoutMain {...options}>
-    <Component />
+    <Component {...props} />
   </LayoutMain>
 )

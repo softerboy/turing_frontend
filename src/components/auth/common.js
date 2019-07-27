@@ -16,6 +16,7 @@ export const SubmitButton = ({ children }) => (
 
 export const getUsernameField = (fieldDecorator, t) => {
   return fieldDecorator('username', {
+    validateFirst: true,
     rules: [
       {
         required: true,
@@ -31,6 +32,7 @@ export const getUsernameField = (fieldDecorator, t) => {
 
 export const getEmailField = (fieldDecorator, t) => {
   return fieldDecorator('email', {
+    validateFirst: true,
     rules: [
       {
         required: true,
@@ -44,19 +46,51 @@ export const getEmailField = (fieldDecorator, t) => {
   })(<Input size="large" />)
 }
 
-export const getPasswordField = (fieldDecorator, t) => {
+const loginFormPasswordRules = t => [
+  {
+    required: true,
+    type: 'string',
+    message: t('Please input your password'),
+  },
+  {
+    min: 6,
+    message: t('Password length must be at least 6 character'),
+  },
+]
+
+const registerFormPasswordRules = t => [
+  {
+    pattern: /(?=.*[a-z])/,
+    message: t(
+      'The password must contain at least 1 lowercase alphabetical character',
+    ),
+  },
+  {
+    pattern: /(?=.*[A-Z])/,
+    message: t(
+      'The password must contain at least 1 uppercase alphabetical character',
+    ),
+  },
+  {
+    pattern: /(?=.*[0-9])/,
+    message: t('The password must contain at least 1 numeric character'),
+  },
+  {
+    pattern: /(?=.[!@#$%^&])/,
+    message: t('The password must contain at least 1 special character'),
+  },
+  {
+    max: 50,
+    message: t('The password length must be between 6 and 50 characters long'),
+  },
+]
+
+export const getPasswordField = (register = false) => (fieldDecorator, t) => {
   return fieldDecorator('password', {
-    rules: [
-      {
-        required: true,
-        type: 'string',
-        message: t('Please input your password'),
-      },
-      {
-        min: 6,
-        message: t('Password length must be at least 6 character'),
-      },
-    ],
+    validateFirst: true,
+    rules: register
+      ? loginFormPasswordRules(t).concat(registerFormPasswordRules(t))
+      : loginFormPasswordRules(t),
   })(<Input.Password size="large" />)
 }
 

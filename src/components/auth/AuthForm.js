@@ -75,7 +75,7 @@ const AuthForm = props => {
 
         {/* password field */}
         <Item label={t('Password')}>
-          {getPasswordField(getFieldDecorator, t)}
+          {getPasswordField(register)(getFieldDecorator, t)}
         </Item>
 
         {/* remember checkbox, show if form type is register */}

@@ -12,9 +12,17 @@ import resolvers from './resolvers'
 
 const cache = new InMemoryCache()
 cache.writeData({ data })
+
+const request = async operation => {
+  const key = 'USER-KEY'
+  const token = localStorage.getItem(key)
+  operation.setContext({ headers: { [key]: token ? `Bearer ${token}` : '' } })
+}
+
 const client = new ApolloClient({
   cache,
   resolvers,
+  request,
 })
 
 const App = () => (

@@ -23,6 +23,9 @@ const Auth = ({ register, history }) => {
     // update customer cache info
     cache.writeData({ data: { auth } })
 
+    // save token to localStorage
+    localStorage.setItem('USER-KEY', auth.accessToken)
+
     // redirect to the page, where came from
     const defaultRedirect = { from: { pathname: '/' } }
     const { from } = history.location.state || defaultRedirect

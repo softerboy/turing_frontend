@@ -25,6 +25,7 @@ const AuthForm = props => {
     registerLink,
     register,
     loginLink,
+    loading,
   } = props
   const { getFieldDecorator } = form
   const { t } = useTranslation()
@@ -33,7 +34,7 @@ const AuthForm = props => {
     e.preventDefault()
     form.validateFields((err, values) => {
       if (!err && onSubmit) {
-        onSubmit(register, values)
+        onSubmit(values, register)
       }
     })
   }
@@ -90,7 +91,9 @@ const AuthForm = props => {
           form type show "Sign in"  or "Sign up"
         */}
         <Item style={textCenter}>
-          <SubmitButton>{register ? t('Sign up') : t('Sign in')}</SubmitButton>
+          <SubmitButton loading={loading}>
+            {register ? t('Sign up') : t('Sign in')}
+          </SubmitButton>
         </Item>
 
         {/* render bottom links */}
@@ -108,6 +111,7 @@ AuthForm.propTypes = {
   forgotLink: propTypeLink,
   form: PropTypes.instanceOf(Object),
   loginLink: propTypeLink,
+  loading: PropTypes.bool,
 
   onSubmit: PropTypes.func,
   // if true register form
@@ -120,6 +124,7 @@ AuthForm.defaultProps = {
   forgotLink: '/forgot',
   form: null,
   loginLink: '/login',
+  loading: false,
   onSubmit: null,
   register: false,
   registerLink: '/register',

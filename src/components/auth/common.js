@@ -2,20 +2,21 @@ import { Button, Checkbox, Input } from 'antd'
 import React from 'react'
 
 // eslint-disable-next-line
-export const SubmitButton = ({ children }) => (
+export const SubmitButton = ({ loading, children }) => (
   <Button
     style={{ padding: '0 46px' }}
     size="large"
     shape="round"
     type="primary"
     htmlType="submit"
+    loading={loading}
   >
     {children}
   </Button>
 )
 
 export const getUsernameField = (fieldDecorator, t) => {
-  return fieldDecorator('username', {
+  return fieldDecorator('name', {
     validateFirst: true,
     rules: [
       {

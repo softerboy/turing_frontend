@@ -1,5 +1,8 @@
+directive @client on FIELD | FIELD_DEFINITION
+
 type Query {
 	test: String
+	auth: RegisterResponse
 }
 
 type Mutation {

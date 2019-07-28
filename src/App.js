@@ -1,14 +1,21 @@
 import React from 'react'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
-import ApolloClient from 'apollo-boost'
+import ApolloClient, { InMemoryCache } from 'apollo-boost'
 import { ApolloProvider } from 'react-apollo'
 
 import Home from './pages/Home'
 import Auth from './pages/Auth'
 import PrivateRoute from './components/auth/PrivateRoute'
 import AppProvider from './components/context/AppContext'
+import data from './local-state'
+import resolvers from './resolvers'
 
-const client = new ApolloClient()
+const cache = new InMemoryCache()
+cache.writeData({ data })
+const client = new ApolloClient({
+  cache,
+  resolvers,
+})
 
 const App = () => (
   <ApolloProvider client={client}>

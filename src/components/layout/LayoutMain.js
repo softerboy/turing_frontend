@@ -1,20 +1,25 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Layout } from 'antd'
 import * as PropTypes from 'prop-types'
 
 import HeaderMain from '../header/HeaderMain'
 import PreHeader from '../header/PreHeader'
+import { AppContext } from '../context/AppContext'
 
 const { Header, Content, Footer } = Layout
 
 const LayoutMain = props => {
-  const { children, auth } = props
+  const { children, hidePreHeader } = props
+
+  const { isLoggedIn } = useContext(AppContext)
 
   return (
     <Layout>
-      {auth || <PreHeader />}
+      {/* hide if current page is login/register
+          or user is already logged in */}
+      {hidePreHeader || isLoggedIn || <PreHeader />}
       <Header style={{ lineHeight: 0 }}>
-        <HeaderMain titleOnly={auth} />
+        <HeaderMain titleOnly={hidePreHeader} />
       </Header>
       <Content style={{ minHeight: '100vh' }}>{children}</Content>
       <Footer />
@@ -26,12 +31,12 @@ LayoutMain.propTypes = {
   children: PropTypes.element,
 
   // if true only app title will be shown
-  auth: PropTypes.bool,
+  hidePreHeader: PropTypes.bool,
 }
 
 LayoutMain.defaultProps = {
   children: null,
-  auth: false,
+  hidePreHeader: false,
 }
 
 export default LayoutMain

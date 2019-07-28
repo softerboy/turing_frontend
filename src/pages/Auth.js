@@ -67,5 +67,5 @@ Auth.defaultProps = {
   register: false,
 }
 
-const AuthFormWithLayout = withLayout({ auth: true })(Auth)
+const AuthFormWithLayout = withLayout({ hidePreHeader: true })(Auth)
 export default withRouter(AuthFormWithLayout)

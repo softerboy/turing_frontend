@@ -1,13 +1,25 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import * as PropTypes from 'prop-types'
-import { Typography, Col, Row, Input, Icon, Badge } from 'antd'
+import {
+  Typography,
+  Col,
+  Row,
+  Input,
+  Icon,
+  Badge,
+  Button,
+  Menu,
+  Dropdown,
+} from 'antd'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 
 import vars from '../../theme/variables'
 import styles from './HeaderMain.module.less'
+import { AppContext } from '../context/AppContext'
 
 const { Title } = Typography
+const { Item } = Menu
 
 const titleStyle = {
   textTransform: 'uppercase',
@@ -22,6 +34,16 @@ const SearchIcon = <Icon type="search" />
 
 const HeaderMain = ({ titleOnly }) => {
   const { t } = useTranslation()
+  const { isLoggedIn, auth } = useContext(AppContext)
+
+  // eslint-disable-next-line
+  const menu = ({ email }) => (
+    <Menu>
+      <Item disabled>{email}</Item>
+      <Item>{t('Profile')}</Item>
+      <Item>{t('Logout')}</Item>
+    </Menu>
+  )
 
   if (titleOnly) {
     return (
@@ -53,10 +75,19 @@ const HeaderMain = ({ titleOnly }) => {
               allowClear
             />
 
+            {isLoggedIn && (
+              <Dropdown overlay={menu(auth)}>
+                <Button className={styles.user} type="link">
+                  <Icon type="user" />
+                </Button>
+              </Dropdown>
+            )}
+
             <Badge
               className={styles.cart}
-              count={2}
               style={{ backgroundColor: '#fff' }}
+              count={0}
+              showZero
             >
               <Icon type="shopping-cart" />
             </Badge>

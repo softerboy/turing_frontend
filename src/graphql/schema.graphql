@@ -1,7 +1,9 @@
 directive @client on FIELD | FIELD_DEFINITION
 
 type Query {
-	test: String
+	me: RegisterResponse
+
+	# client side queries
 	auth: RegisterResponse
 }
 

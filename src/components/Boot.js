@@ -1,25 +1,21 @@
-/* eslint-disable react/prop-types */
-import React from 'react'
-import { Query } from 'react-apollo'
+import { useQuery } from '@apollo/react-hooks'
 
 import ME_QUERY from '../graphql/me-query.graphql'
 
 // renders loader placeholder component
 // during application boots
 const Boot = ({ children }) => {
-  const renderProp = ({ data, loading, error, client }) => {
-    if (error) return children
+  const { data, loading, error, client } = useQuery(ME_QUERY)
 
-    // TODO: replace with full page loader
-    if (loading) return null
+  if (error) return children
 
-    const { me } = data
-    client.cache.writeData({ data: { auth: me } })
+  // TODO: replace with full page loader
+  if (loading) return null
 
-    return children
-  }
+  const { me } = data
+  client.cache.writeData({ data: { auth: me } })
 
-  return <Query query={ME_QUERY}>{renderProp}</Query>
+  return children
 }
 
 export default Boot

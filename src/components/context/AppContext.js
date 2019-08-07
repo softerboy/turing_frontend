@@ -1,5 +1,5 @@
 import React from 'react'
-import { Query } from 'react-apollo'
+import { useQuery } from '@apollo/react-hooks'
 
 import APP_CONTEXT_QUERY from '../../graphql/app-context-query.graphql'
 
@@ -8,20 +8,17 @@ const { Provider } = AppContext
 
 // eslint-disable-next-line
 const AppProvider = ({ children }) => {
-  /* eslint-disable react/prop-types */
-  const renderProp = ({ data }) => {
-    const { auth } = data
-    const isLoggedIn = Boolean(auth && auth.accessToken)
+  const { data } = useQuery(APP_CONTEXT_QUERY)
 
-    const value = {
-      ...data,
-      isLoggedIn,
-    }
+  const { auth } = data
+  const isLoggedIn = Boolean(auth && auth.accessToken)
 
-    return <Provider value={value}>{children}</Provider>
+  const value = {
+    ...data,
+    isLoggedIn,
   }
 
-  return <Query query={APP_CONTEXT_QUERY}>{renderProp}</Query>
+  return <Provider value={value}>{children}</Provider>
 }
 
 export default AppProvider

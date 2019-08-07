@@ -1,7 +1,7 @@
 import React, { useRef } from 'react'
 import { withRouter } from 'react-router-dom'
 import * as PropTypes from 'prop-types'
-import { Mutation } from 'react-apollo'
+import { useMutation } from '@apollo/react-hooks'
 
 import { withLayout } from '../components/layout/LayoutMain'
 import AuthForm from '../components/auth/AuthForm'
@@ -15,7 +15,7 @@ const Auth = ({ register, history }) => {
   // used for setting response error message in form
   const formRef = useRef(null)
 
-  const saveAuthData = (cache, { data }) => {
+  const update = (cache, { data }) => {
     // depending on login type, extract response by field name
     const mutation = register ? 'customerRegister' : 'customerLogin'
     const auth = data[mutation]
@@ -44,20 +44,19 @@ const Auth = ({ register, history }) => {
     ? CUSTOMER_REGISTER_MUTATION
     : CUSTOMER_LOGIN_MUTATION
 
-  const renderProp = (mutate, { loading }) => (
-    <AuthForm
-      ref={formRef}
-      onSubmit={variables => mutate({ variables })}
-      register={register}
-      loading={loading}
-    />
-  )
+  const [mutate, { loading }] = useMutation(mutation, {
+    onError,
+    update,
+  })
 
   return (
     <Wrapper>
-      <Mutation mutation={mutation} update={saveAuthData} onError={onError}>
-        {renderProp}
-      </Mutation>
+      <AuthForm
+        ref={formRef}
+        onSubmit={variables => mutate({ variables })}
+        register={register}
+        loading={loading}
+      />
     </Wrapper>
   )
 }

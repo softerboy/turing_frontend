@@ -14,15 +14,29 @@ const addGraphqlLoader = () => config => {
   return config
 }
 
-module.exports = override(
-  fixBabelImports('import', {
-    libraryName: 'antd',
-    libraryDirectory: 'es',
-    style: true,
-  }),
-  addLessLoader({
-    javascriptEnabled: true,
-    modifyVars: themeVars,
-  }),
-  addGraphqlLoader(),
-)
+module.exports = {
+  webpack: override(
+    fixBabelImports('import', {
+      libraryName: 'antd',
+      libraryDirectory: 'es',
+      style: true,
+    }),
+    addLessLoader({
+      javascriptEnabled: true,
+      modifyVars: themeVars,
+    }),
+    addGraphqlLoader(),
+  ),
+
+  jest: config => {
+    config.moduleFileExtensions.push('graphql')
+    /* eslint-disable no-param-reassign */
+    config.transform = {
+      '.(gql|graphql)$': '<rootDir>/gql-transformer.js',
+      ...config.transform,
+    }
+    // config.transform['.*'] = 'babel-jest'
+
+    return config
+  },
+}

@@ -11,7 +11,9 @@ import CUSTOMER_REGISTER_MUTATION from '../graphql/customer-register-mutation.gr
 import CUSTOMER_LOGIN_MUTATION from '../graphql/customer-login-mutation.graphql'
 
 /* eslint-disable react/prop-types */
-const Auth = ({ register, history }) => {
+// this export used for testing purpose
+// for real use case as a page component use default export
+export const Auth = ({ register, history }) => {
   // used for setting response error message in form
   const formRef = useRef(null)
 

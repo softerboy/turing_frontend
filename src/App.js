@@ -4,6 +4,7 @@ import ApolloClient, { InMemoryCache } from 'apollo-boost'
 import { ApolloProvider } from 'react-apollo'
 
 import Home from './pages/Home'
+// eslint-disable-next-line
 import Auth from './pages/Auth'
 import PrivateRoute from './components/auth/PrivateRoute'
 import AppProvider from './components/context/AppContext'

@@ -19,6 +19,8 @@ type Mutation {
 		email: String!
 		password: String!
 	): RegisterResponse
+
+	customerLogout: Boolean
 }
 
 type RegisterResponse {

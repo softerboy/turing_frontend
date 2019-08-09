@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   auth: {
     customer_id: null,
     name: null,

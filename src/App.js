@@ -11,14 +11,16 @@ import AppProvider from './components/context/AppContext'
 import data from './local-state'
 import resolvers from './resolvers'
 import Boot from './components/Boot'
+import { USER_KEY } from './utils/constants'
 
 const cache = new InMemoryCache()
 cache.writeData({ data })
 
 const request = async operation => {
-  const key = 'USER-KEY'
-  const token = localStorage.getItem(key)
-  operation.setContext({ headers: { [key]: token ? `Bearer ${token}` : '' } })
+  const token = localStorage.getItem(USER_KEY)
+  operation.setContext({
+    headers: { [USER_KEY]: token ? `Bearer ${token}` : '' },
+  })
 }
 
 const client = new ApolloClient({

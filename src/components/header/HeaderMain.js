@@ -10,13 +10,19 @@ import {
   Button,
   Menu,
   Dropdown,
+  notification,
 } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
+import { useMutation } from '@apollo/react-hooks'
 
 import vars from '../../theme/variables'
 import styles from './HeaderMain.module.less'
 import { AppContext } from '../context/AppContext'
+import localState from '../../local-state'
+
+import CUSTOMER_LOGOUT from '../../graphql/customer-logout-mutation.graphql'
+import { USER_KEY } from '../../utils/constants'
 
 const { Title } = Typography
 const { Item } = Menu
@@ -36,12 +42,47 @@ const HeaderMain = ({ titleOnly }) => {
   const { t } = useTranslation()
   const { isLoggedIn, auth } = useContext(AppContext)
 
+  // called when logout error
+  const onError = err => {
+    // just show notification error
+    notification.error({
+      description: err.message,
+      message: t('Error'),
+    })
+  }
+
+  // called when logout completed
+  const update = (cache, { data: { customerLogout } }) => {
+    // cleat user's token from localStorage
+    localStorage.removeItem(USER_KEY)
+
+    if (customerLogout) {
+      // reset user's initial state
+      cache.writeData({ data: { auth: localState.auth } })
+      return
+    }
+
+    notification.error({
+      message: t('Error'),
+      description: t('An error occurred when logging out, please try again'),
+    })
+  }
+
+  const [logout] = useMutation(CUSTOMER_LOGOUT, {
+    onError,
+    update,
+  })
+
+  const onMenuClick = async ({ key }) => {
+    if (key === 'LOGOUT') logout()
+  }
+
   // eslint-disable-next-line
   const menu = ({ email }) => (
-    <Menu>
+    <Menu onClick={onMenuClick}>
       <Item disabled>{email}</Item>
       <Item>{t('Profile')}</Item>
-      <Item>{t('Logout')}</Item>
+      <Item key="LOGOUT">{t('Logout')}</Item>
     </Menu>
   )
 

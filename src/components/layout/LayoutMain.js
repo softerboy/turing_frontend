@@ -1,5 +1,6 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import React, { useContext } from 'react'
-import { Layout } from 'antd'
+import { Col, Layout, Row } from 'antd'
 import * as PropTypes from 'prop-types'
 
 import HeaderMain from '../header/HeaderMain'
@@ -21,7 +22,13 @@ const LayoutMain = props => {
       <Header style={{ lineHeight: 0 }}>
         <HeaderMain titleOnly={hidePreHeader} />
       </Header>
-      <Content style={{ minHeight: '100vh' }}>{children}</Content>
+      <Content style={{ minHeight: '100vh' }}>
+        <Row>
+          <Col span={22} offset={1}>
+            {children}
+          </Col>
+        </Row>
+      </Content>
       <Footer />
     </Layout>
   )

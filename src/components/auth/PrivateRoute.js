@@ -1,8 +1,8 @@
+/* eslint-disable react/prop-types, react/jsx-props-no-spreading */
 import React, { useContext } from 'react'
 import { Redirect, Route } from 'react-router-dom'
 import { AppContext } from '../context/AppContext'
 
-/* eslint-disable react/prop-types */
 const PrivateRoute = ({ component: Component, ...rest }) => {
   const { auth } = useContext(AppContext)
 

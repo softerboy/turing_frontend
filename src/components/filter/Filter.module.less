@@ -1,0 +1,28 @@
+@unit: 32px;
+@marginUnit: 8px;
+
+.colorItemContainer {
+	width: @unit;
+	height: @unit;
+	border-radius: 50%;
+	padding: 4px;
+	float: left;
+	margin-right: @marginUnit;
+	cursor: pointer;
+
+	div:first-child {
+		width: 100%;
+		height: 100%;
+		border-radius: 50%;
+	}
+}
+
+.selected {
+	border: 1px solid black;
+}
+
+.sizeButton {
+	min-width: 70px;
+	margin-right: @marginUnit;
+	margin-bottom: @marginUnit;
+}

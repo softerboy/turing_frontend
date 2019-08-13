@@ -12,10 +12,12 @@ const AppProvider = ({ children }) => {
 
   const { auth } = data
   const isLoggedIn = Boolean(auth && auth.accessToken)
+  const currency = '$'
 
   const value = {
     ...data,
     isLoggedIn,
+    currency,
   }
 
   return <Provider value={value}>{children}</Provider>

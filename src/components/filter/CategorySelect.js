@@ -1,12 +1,17 @@
 /* eslint-disable camelcase */
 import React, { useRef, useImperativeHandle, forwardRef } from 'react'
 import * as PropTypes from 'prop-types'
-import { Checkbox } from 'antd'
+import { Checkbox, Typography } from 'antd'
 import { useTranslation } from 'react-i18next'
 
 import BaseSelect from './BaseSelect'
 
-const CategorySelect = ({ categories, defaultCategories, onChange }, ref) => {
+const { Text } = Typography
+
+const CategorySelect = (
+  { categories, defaultCategoryIds = [], onChange },
+  ref,
+) => {
   const baseSelectRef = useRef(null)
 
   useImperativeHandle(ref, () => ({
@@ -17,9 +22,28 @@ const CategorySelect = ({ categories, defaultCategories, onChange }, ref) => {
 
   const { t } = useTranslation()
 
-  const renderItem = (category, isSelected) => {
-    return <Checkbox checked={isSelected}>{t(category.name)}</Checkbox>
+  const renderItem = (item, isSelected) => {
+    if (typeof item === 'string') {
+      // item is header
+      return (
+        <div style={{ marginTop: 16 }}>
+          <Text>{item}</Text>
+          <hr style={{ border: '0.5px solid #e8e8e8' }} />
+        </div>
+      )
+    }
+
+    if (typeof item === 'object') {
+      // item is category object
+      return <Checkbox checked={isSelected}>{t(item.name)}</Checkbox>
+    }
+
+    return null
   }
+
+  const defaultCategories = categories.filter(({ category_id }) =>
+    defaultCategoryIds.includes(category_id),
+  )
 
   return (
     <BaseSelect
@@ -48,11 +72,11 @@ const propTypeCategories = PropTypes.arrayOf(
 CategorySelect.propTypes = {
   categories: propTypeCategories,
   onChange: PropTypes.func,
-  defaultCategories: propTypeCategories,
+  defaultCategoryIds: PropTypes.arrayOf(PropTypes.number),
 }
 
 CategorySelect.defaultProps = {
   categories: [],
   onChange: null,
-  defaultCategories: [],
+  defaultCategoryIds: [],
 }

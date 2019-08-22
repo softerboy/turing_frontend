@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import React from 'react'
 import * as PropTypes from 'prop-types'
 import { Button } from 'antd'
@@ -6,7 +7,7 @@ import BaseSelect from './BaseSelect'
 import styles from './Filter.module.less'
 
 const SizeSelect = props => {
-  const { sizes, defaultSizes, multiple, onChange } = props
+  const { sizes, defaultSizeIds, multiple, onChange } = props
 
   // eslint-disable-next-line
   const renderSize = ({ value }, isSelected) => {
@@ -21,13 +22,17 @@ const SizeSelect = props => {
     )
   }
 
+  const defaultSizes = sizes.filter(({ size_id }) =>
+    defaultSizeIds.includes(size_id),
+  )
+
   return (
     <BaseSelect
       items={sizes}
       renderItem={renderSize}
       multiple={multiple}
       defaultItems={defaultSizes}
-      itemKey="id"
+      itemKey="size_id"
       onChange={onChange}
     />
   )
@@ -37,7 +42,7 @@ export default SizeSelect
 
 const propTypeSize = PropTypes.arrayOf(
   PropTypes.shape({
-    id: PropTypes.number.isRequired,
+    size_id: PropTypes.number.isRequired,
     value: PropTypes.string.isRequired,
     name: PropTypes.string,
   }),
@@ -45,14 +50,14 @@ const propTypeSize = PropTypes.arrayOf(
 
 SizeSelect.propTypes = {
   sizes: propTypeSize,
-  defaultSizes: propTypeSize,
+  defaultSizeIds: PropTypes.arrayOf(PropTypes.number),
   multiple: PropTypes.bool,
   onChange: PropTypes.func,
 }
 
 SizeSelect.defaultProps = {
   sizes: [],
-  defaultSizes: [],
+  defaultSizeIds: [],
   multiple: false,
   onChange: null,
 }

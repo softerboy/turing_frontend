@@ -5,6 +5,11 @@ type Query {
 
 	# client side queries
 	auth: RegisterResponse
+
+	departments: [Department]
+	attributes(name: String): [Attribute]
+	# used by filter's price slider range
+	priceRange: PriceRange!
 }
 
 type Mutation {
@@ -40,4 +45,29 @@ type RegisterResponse {
 	credit_card: String
 	accessToken: String!
 	expires_in: String!
+}
+
+type Department {
+	department_id: Int!
+	name: String!
+	description: String
+	categories: [Category]
+}
+
+type Category {
+	category_id: Int!
+	department_id: Int!
+	name: String!
+	description: String
+}
+
+type Attribute {
+	attribute_id: Int!
+	name: String!
+	value: String!
+}
+
+type PriceRange {
+	max: Float!
+	min: Float!
 }

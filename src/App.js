@@ -11,7 +11,7 @@ import AppProvider from './components/context/AppContext'
 import data from './local-state'
 import resolvers from './resolvers'
 import Boot from './components/Boot'
-import { USER_KEY } from './utils/constants'
+import { USER_KEY } from './common/constants'
 
 const cache = new InMemoryCache()
 cache.writeData({ data })

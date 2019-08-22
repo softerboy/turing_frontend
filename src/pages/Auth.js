@@ -9,7 +9,7 @@ import Wrapper from '../components/auth/Wrapper'
 
 import CUSTOMER_REGISTER_MUTATION from '../graphql/customer-register-mutation.graphql'
 import CUSTOMER_LOGIN_MUTATION from '../graphql/customer-login-mutation.graphql'
-import { USER_KEY } from '../utils/constants'
+import { USER_KEY } from '../common/constants'
 
 /* eslint-disable react/prop-types */
 // this export used for testing purpose

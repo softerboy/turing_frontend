@@ -3,7 +3,7 @@ import React from 'react'
 import { Col, Row } from 'antd'
 
 import LayoutMain from '../components/layout/LayoutMain'
-import FilterMain from '../components/filter/FilterMain'
+import FilterRenderer from '../components/filter/FilterRenderer'
 
 const colWidth = {
   filter: {
@@ -28,7 +28,7 @@ const Home = () => (
   <LayoutMain>
     <Row gutter={16} style={{ marginTop: 24 }}>
       <Col {...colWidth.filter}>
-        <FilterMain />
+        <FilterRenderer />
       </Col>
 
       <Col {...colWidth.products}>

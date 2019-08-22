@@ -7,7 +7,6 @@ import { AppContext } from '../context/AppContext'
 const PriceSelect = props => {
   const { max, min, defaultPrice, onChange } = props
   const { currency } = useContext(AppContext)
-
   const marks = {
     [min]: `${currency}${min}`,
     [max]: `${currency}${max}`,
@@ -19,7 +18,7 @@ const PriceSelect = props => {
       marks={marks}
       max={max}
       min={min}
-      defaultValue={defaultPrice}
+      defaultValue={defaultPrice.length ? defaultPrice : [min, max]}
       onChange={onChange}
     />
   )
@@ -37,6 +36,6 @@ PriceSelect.propTypes = {
 PriceSelect.defaultProps = {
   max: 0,
   min: 0,
-  defaultPrice: [0, 0],
+  defaultPrice: [],
   onChange: () => {}, // noop
 }

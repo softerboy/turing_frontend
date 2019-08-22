@@ -1,0 +1,27 @@
+query FilterQuery {
+  departments {
+    name
+    categories {
+      category_id
+      description
+      name
+    }
+  }
+
+  colors: attributes(name: "color") {
+    color_id: attribute_id
+    name
+    value
+  }
+
+  sizes: attributes(name: "size") {
+    size_id: attribute_id
+    name
+    value
+  }
+
+  price: priceRange {
+    max
+    min
+  }
+}

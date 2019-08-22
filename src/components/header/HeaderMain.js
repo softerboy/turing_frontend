@@ -22,7 +22,7 @@ import { AppContext } from '../context/AppContext'
 import localState from '../../local-state'
 
 import CUSTOMER_LOGOUT from '../../graphql/customer-logout-mutation.graphql'
-import { USER_KEY } from '../../utils/constants'
+import { USER_KEY } from '../../common/constants'
 
 const { Title } = Typography
 const { Item } = Menu

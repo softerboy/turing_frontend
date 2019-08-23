@@ -1,6 +1,7 @@
 import React, {
   forwardRef,
   useContext,
+  useEffect,
   useImperativeHandle,
   useState,
 } from 'react'
@@ -10,11 +11,17 @@ import * as PropTypes from 'prop-types'
 import { AppContext } from '../context/AppContext'
 
 const PriceSelect = (props, ref) => {
-  const { max, min, defaultPrice = [], onChange } = props
-  const [value, setValue] = useState(
-    defaultPrice.length ? defaultPrice : [min, max],
-  )
+  const { max, min, defaultPrice, onChange } = props
+  const [value, setValue] = useState(defaultPrice)
   const { currency } = useContext(AppContext)
+
+  useEffect(() => {
+    if (defaultPrice && defaultPrice.length) {
+      setValue(defaultPrice)
+    } else {
+      setValue([min, max])
+    }
+  }, [defaultPrice, min, max])
 
   useImperativeHandle(ref, () => ({
     getSelectedPrice: () => value,

@@ -1,4 +1,9 @@
-/* eslint-disable import/prefer-default-export, no-restricted-globals, no-param-reassign */
+/* eslint-disable
+  import/prefer-default-export,
+  no-restricted-globals,
+  no-param-reassign,
+  camelcase
+*/
 import qs from 'query-string'
 
 const arrayFormat = 'comma'
@@ -32,4 +37,24 @@ export const queryStringToDefaultValues = queryString => {
     defaultSizeIds: toNumberArray(sizes),
     defaultPrice: toNumberArray(price).sort(),
   }
+}
+
+export const filterToQueryString = filterOptions => {
+  const result = {}
+  const { categories, colors, sizes, price } = filterOptions
+
+  if (categories && categories.length) {
+    result.categories = categories.map(({ category_id }) => category_id)
+  }
+
+  if (colors && colors.length) {
+    result.colors = colors.map(({ color_id }) => color_id)
+  }
+
+  if (sizes && sizes.length) {
+    result.sizes = sizes.map(({ size_id }) => size_id)
+  }
+
+  result.price = price
+  return qs.stringify(result, { arrayFormat })
 }

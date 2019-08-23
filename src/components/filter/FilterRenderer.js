@@ -5,16 +5,19 @@ import { useQuery } from '@apollo/react-hooks'
 
 import Filter from './Filter'
 import FILTER_QUERY from '../../graphql/filter-query.graphql'
-import { queryStringToDefaultValues } from '../../common/utils'
+import {
+  filterToQueryString,
+  queryStringToDefaultValues,
+} from '../../common/utils'
 
-const FilterRenderer = ({ location }) => {
+const FilterRenderer = ({ history }) => {
   const { data, error, loading } = useQuery(FILTER_QUERY)
   const [defaultValues, setDefaultValues] = useState({})
 
   useEffect(() => {
-    const values = queryStringToDefaultValues(location.search)
+    const values = queryStringToDefaultValues(history.location.search)
     setDefaultValues(values)
-  }, [location.search])
+  }, [history.location.search])
 
   // TODO: replace with loading component
   if (loading) return <div>Loading</div>
@@ -27,7 +30,10 @@ const FilterRenderer = ({ location }) => {
   }, [])
 
   // eslint-disable-next-line no-unused-vars
-  const handleFilterChange = filterData => {}
+  const handleFilterChange = selectedOptions => {
+    const queryString = filterToQueryString(selectedOptions)
+    history.push(`/products?${queryString}`)
+  }
 
   return (
     <Filter

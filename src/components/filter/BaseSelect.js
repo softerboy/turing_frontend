@@ -1,4 +1,4 @@
-import React, { useState, useImperativeHandle } from 'react'
+import React, { useState, useImperativeHandle, useEffect } from 'react'
 import * as PropTypes from 'prop-types'
 
 const BaseSelect = (props, ref) => {
@@ -22,6 +22,10 @@ const BaseSelect = (props, ref) => {
   }
 
   const [selected, setSelected] = useState(initialSelected)
+
+  useEffect(() => {
+    setSelected(defaultItems)
+  }, [defaultItems])
 
   useImperativeHandle(ref, () => ({
     getSelected: () => selected,

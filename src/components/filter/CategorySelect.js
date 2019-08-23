@@ -15,7 +15,10 @@ const CategorySelect = (
   const baseSelectRef = useRef(null)
 
   useImperativeHandle(ref, () => ({
-    getSelectedCategories: () => baseSelectRef.current.getSelected(),
+    getSelectedCategories: () =>
+      baseSelectRef.current
+        .getSelected()
+        .filter(item => typeof item === 'object'),
   }))
 
   const { t } = useTranslation()

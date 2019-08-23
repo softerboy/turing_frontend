@@ -38,7 +38,7 @@ const App = () => (
             <Route
               exact
               name="home"
-              path={['/', '/home', '/index']}
+              path={['/', '/home', '/index', '/products']}
               component={Home}
             />
             {/*

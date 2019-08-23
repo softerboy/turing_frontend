@@ -26,7 +26,17 @@ const FilterRenderer = ({ location }) => {
     return acc.concat([curr.name]).concat(curr.categories)
   }, [])
 
-  return <Filter {...data} {...defaultValues} categories={categories} />
+  // eslint-disable-next-line no-unused-vars
+  const handleFilterChange = filterData => {}
+
+  return (
+    <Filter
+      {...data}
+      {...defaultValues}
+      categories={categories}
+      onChange={handleFilterChange}
+    />
+  )
 }
 
 export default withRouter(FilterRenderer)

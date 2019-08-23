@@ -1,12 +1,17 @@
 /* eslint-disable camelcase */
-import React from 'react'
+import React, { forwardRef, useImperativeHandle, useRef } from 'react'
 import * as PropTypes from 'prop-types'
 
 import BaseSelect from './BaseSelect'
 import styles from './Filter.module.less'
 
-const ColorSelect = props => {
-  const { colors, multiple, defaultColorIds, onChange } = props
+const ColorSelect = (props, ref) => {
+  const { colors, multiple, defaultColorIds = [], onChange } = props
+  const baseSelectRef = useRef(null)
+
+  useImperativeHandle(ref, () => ({
+    getSelectedColors: () => baseSelectRef.current.getSelected(),
+  }))
 
   const renderColor = (item, isSelected) => {
     const { colorItemContainer, selected } = styles
@@ -30,6 +35,7 @@ const ColorSelect = props => {
 
   return (
     <BaseSelect
+      ref={baseSelectRef}
       renderItem={renderColor}
       items={colors}
       itemKey="color_id"
@@ -40,7 +46,7 @@ const ColorSelect = props => {
   )
 }
 
-export default ColorSelect
+export default forwardRef(ColorSelect)
 
 const propTypeColor = PropTypes.arrayOf(
   PropTypes.shape({

@@ -1,15 +1,33 @@
-import React, { useContext } from 'react'
+import React, {
+  forwardRef,
+  useContext,
+  useImperativeHandle,
+  useState,
+} from 'react'
 import { Slider } from 'antd'
 import * as PropTypes from 'prop-types'
 
 import { AppContext } from '../context/AppContext'
 
-const PriceSelect = props => {
-  const { max, min, defaultPrice, onChange } = props
+const PriceSelect = (props, ref) => {
+  const { max, min, defaultPrice = [], onChange } = props
+  const [value, setValue] = useState(
+    defaultPrice.length ? defaultPrice : [min, max],
+  )
   const { currency } = useContext(AppContext)
+
+  useImperativeHandle(ref, () => ({
+    getSelectedPrice: () => value,
+  }))
+
   const marks = {
     [min]: `${currency}${min}`,
     [max]: `${currency}${max}`,
+  }
+
+  const onPriceChange = newValue => {
+    setValue(newValue)
+    if (onChange) onChange(newValue)
   }
 
   return (
@@ -18,13 +36,13 @@ const PriceSelect = props => {
       marks={marks}
       max={max}
       min={min}
-      defaultValue={defaultPrice.length ? defaultPrice : [min, max]}
-      onChange={onChange}
+      value={value}
+      onChange={onPriceChange}
     />
   )
 }
 
-export default PriceSelect
+export default forwardRef(PriceSelect)
 
 PriceSelect.propTypes = {
   max: PropTypes.number,

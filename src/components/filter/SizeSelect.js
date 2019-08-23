@@ -1,13 +1,18 @@
 /* eslint-disable camelcase */
-import React from 'react'
+import React, { forwardRef, useImperativeHandle, useRef } from 'react'
 import * as PropTypes from 'prop-types'
 import { Button } from 'antd'
 
 import BaseSelect from './BaseSelect'
 import styles from './Filter.module.less'
 
-const SizeSelect = props => {
-  const { sizes, defaultSizeIds, multiple, onChange } = props
+const SizeSelect = (props, ref) => {
+  const { sizes, defaultSizeIds = [], multiple, onChange } = props
+  const baseSelectRef = useRef(null)
+
+  useImperativeHandle(ref, () => ({
+    getSelectedSizes: () => baseSelectRef.current.getSelected(),
+  }))
 
   // eslint-disable-next-line
   const renderSize = ({ value }, isSelected) => {
@@ -28,6 +33,7 @@ const SizeSelect = props => {
 
   return (
     <BaseSelect
+      ref={baseSelectRef}
       items={sizes}
       renderItem={renderSize}
       multiple={multiple}
@@ -38,7 +44,7 @@ const SizeSelect = props => {
   )
 }
 
-export default SizeSelect
+export default forwardRef(SizeSelect)
 
 const propTypeSize = PropTypes.arrayOf(
   PropTypes.shape({

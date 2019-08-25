@@ -3,44 +3,66 @@
 @borderRadius: 50%;
 @marginLabel: 16px;
 
-.ant-pagination {
-	text-align: center;
+.spacer {
+	clear: both;
+	margin: 32px;
 }
 
-.ant-pagination-prev {
-	float: left;
-}
-
-.ant-pagination-next {
+.paginationSecondary {
 	float: right;
-}
 
-.ant-pagination-item {
-	background-color: transparent;
-	border: none;
-	a {
-		font-weight: bold;
+	.ant-pagination-item,
+	.ant-pagination-prev,
+	.ant-pagination-next,
+	.ant-pagination-jump-next,
+	.ant-pagination-jump-prev
+	{
+		display: none;
 	}
 }
 
-.ant-pagination-item-active {
-	border-radius: @borderRadius;
-	background-color: @primary-color;
-	a {
-		color: @white !important;
+.paginationMain {
+	.ant-pagination {
+		text-align: center;
 	}
-}
 
-.arrowIcon {
-	background-color: #EFEFEF;
-	padding: 8px;
-	border-radius: @borderRadius;
-}
+	.ant-pagination-prev {
+		float: left;
+	}
 
-.prevLabel {
-	margin-left: @marginLabel;
-}
+	.ant-pagination-next {
+		float: right;
+	}
 
-.nextLabel {
-	margin-right: @marginLabel;
+	.ant-pagination-item {
+		background-color: transparent;
+		border: none;
+
+		a {
+			font-weight: bold;
+		}
+	}
+
+	.ant-pagination-item-active {
+		border-radius: @borderRadius;
+		background-color: @primary-color;
+
+		a {
+			color: @white !important;
+		}
+	}
+
+	.arrowIcon {
+		background-color: #EFEFEF;
+		padding: 8px;
+		border-radius: @borderRadius;
+	}
+
+	.prevLabel {
+		margin-left: @marginLabel;
+	}
+
+	.nextLabel {
+		margin-right: @marginLabel;
+	}
 }

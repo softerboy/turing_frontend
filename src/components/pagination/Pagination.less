@@ -1,0 +1,46 @@
+@import "~antd/lib/style/themes/default";
+
+@borderRadius: 50%;
+@marginLabel: 16px;
+
+.ant-pagination {
+	text-align: center;
+}
+
+.ant-pagination-prev {
+	float: left;
+}
+
+.ant-pagination-next {
+	float: right;
+}
+
+.ant-pagination-item {
+	background-color: transparent;
+	border: none;
+	a {
+		font-weight: bold;
+	}
+}
+
+.ant-pagination-item-active {
+	border-radius: @borderRadius;
+	background-color: @primary-color;
+	a {
+		color: @white !important;
+	}
+}
+
+.arrowIcon {
+	background-color: #EFEFEF;
+	padding: 8px;
+	border-radius: @borderRadius;
+}
+
+.prevLabel {
+	margin-left: @marginLabel;
+}
+
+.nextLabel {
+	margin-right: @marginLabel;
+}

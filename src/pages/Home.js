@@ -4,6 +4,7 @@ import { Col, Row } from 'antd'
 
 import LayoutMain from '../components/layout/LayoutMain'
 import FilterRenderer from '../components/filter/FilterRenderer'
+import Index from '../components/pagination/Index'
 
 const colWidth = {
   filter: {
@@ -27,6 +28,12 @@ const colWidth = {
 const Home = () => (
   <LayoutMain>
     <Row gutter={16} style={{ marginTop: 24 }}>
+      <Col>
+        <Index />
+      </Col>
+
+      <br />
+
       <Col {...colWidth.filter}>
         <FilterRenderer />
       </Col>

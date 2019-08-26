@@ -7,6 +7,7 @@
 import qs from 'query-string'
 
 const arrayFormat = 'comma'
+const parseNumbers = true
 
 const isNumber = param => !isNaN(param)
 const toNumber = param => Number(param)
@@ -57,4 +58,18 @@ export const filterToQueryString = filterOptions => {
 
   result.price = price
   return qs.stringify(result, { arrayFormat })
+}
+
+export const paginationPropsFromQueryString = queryString => {
+  const result = { page: 1, perPage: 10, sort: undefined }
+  if (!queryString) return result
+
+  const { page, per_page, sort = '' } = qs.parse(queryString, { parseNumbers })
+  if (!isNaN(page)) result.page = page
+  if (!isNaN(per_page)) result.per_page = per_page
+  if (['name', 'category', 'price'].includes(sort.toLowerCase())) {
+    result.sort = sort.toLowerCase()
+  }
+
+  return result
 }

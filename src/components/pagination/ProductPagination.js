@@ -1,5 +1,6 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState } from 'react'
+/* eslint-disable jsx-a11y/anchor-is-valid, react/destructuring-assignment */
+import React, { useEffect, useState } from 'react'
+import * as PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 import { Col, Icon, Pagination, Row, Select, Typography } from 'antd'
 
@@ -8,28 +9,20 @@ import './Pagination.less'
 const { Option } = Select
 const { Text } = Typography
 
-const sortOptions = [
-  {
-    value: 'category',
-    label: 'Category',
-  },
-  {
-    value: 'name',
-    label: 'Name',
-  },
-  {
-    value: 'price',
-    label: 'Price',
-  },
-]
-
-const Index = () => {
-  const [sort, setSort] = useState()
-  const [range, setRange] = useState([])
-  const [current, setCurrent] = useState(1)
-  const [pageSize, setPageSize] = useState(10)
+const ProductPagination = props => {
+  const [sort, setSort] = useState(props.sort)
+  const [range, setRange] = useState(props.range)
+  const [current, setCurrent] = useState(props.current)
+  const [pageSize, setPageSize] = useState(props.pageSize)
 
   const { t } = useTranslation()
+
+  useEffect(() => {
+    setSort(props.sort)
+    setPageSize(props.pageSize)
+    setCurrent(props.current)
+    setPageSize(props.pageSize)
+  }, [props])
 
   const itemRender = (curr, type, originalElement) => {
     if (type === 'prev') {
@@ -77,7 +70,7 @@ const Index = () => {
             value={sort}
             onChange={val => setSort(val)}
           >
-            {sortOptions.map(({ value, label }) => (
+            {props.sortOptions.map(({ value, label }) => (
               <Option key={value} value={value}>
                 {t(label)}
               </Option>
@@ -96,12 +89,13 @@ const Index = () => {
           <Pagination
             current={current}
             className="paginationSecondary"
-            total={101}
+            total={props.total}
             showQuickJumper
             showSizeChanger
             style={{ float: 'right' }}
             onChange={onChange}
             onShowSizeChange={onShowSizeChange}
+            pageSize={pageSize}
           />
         </Col>
       </Row>
@@ -109,7 +103,7 @@ const Index = () => {
         <Col className="paginationMain">
           <Pagination
             current={current}
-            total={101}
+            total={props.total}
             pageSize={pageSize}
             itemRender={itemRender}
             showTotal={showTotal}
@@ -121,4 +115,29 @@ const Index = () => {
   )
 }
 
-export default Index
+export default ProductPagination
+
+ProductPagination.propTypes = {
+  sortOptions: PropTypes.arrayOf(
+    PropTypes.shape({
+      label: PropTypes.string.isRequired,
+      value: PropTypes.string.isRequired,
+    }),
+  ),
+
+  total: PropTypes.number,
+  sort: PropTypes.string,
+  range: PropTypes.arrayOf(PropTypes.number),
+  current: PropTypes.number,
+  pageSize: PropTypes.number,
+}
+
+ProductPagination.defaultProps = {
+  sortOptions: [],
+
+  total: 0,
+  sort: undefined,
+  range: [],
+  current: 1,
+  pageSize: 10,
+}

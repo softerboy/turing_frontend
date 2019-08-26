@@ -18,4 +18,22 @@ export default {
     expires_in: null,
     __typename: 'RegisterResponse',
   },
+
+  productSortOptions: [
+    {
+      value: 'category',
+      label: 'Category',
+      __typename: 'SortItem',
+    },
+    {
+      value: 'name',
+      label: 'Name',
+      __typename: 'SortItem',
+    },
+    {
+      value: 'price',
+      label: 'Price',
+      __typename: 'SortItem',
+    },
+  ],
 }

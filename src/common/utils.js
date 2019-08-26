@@ -40,8 +40,8 @@ export const queryStringToDefaultValues = queryString => {
   }
 }
 
-export const filterToQueryString = filterOptions => {
-  const result = {}
+export const filterToQueryString = (filterOptions, currentQueryString) => {
+  const result = qs.parse(currentQueryString, { arrayFormat })
   const { categories, colors, sizes, price } = filterOptions
 
   if (categories && categories.length) {
@@ -72,4 +72,22 @@ export const paginationPropsFromQueryString = queryString => {
   }
 
   return result
+}
+
+export const mergePaginationParamsToQueryString = (
+  paginationParams,
+  currentQueryString,
+) => {
+  const actualParams = qs.parse(currentQueryString, { arrayFormat })
+
+  const { current: page, pageSize: per_page, sort } = paginationParams
+
+  const result = {
+    ...actualParams,
+    page,
+    per_page,
+    sort,
+  }
+
+  return qs.stringify(result, { arrayFormat })
 }

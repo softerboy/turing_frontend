@@ -53,11 +53,32 @@ const ProductPagination = props => {
 
   const onChange = page => {
     setCurrent(page)
+
+    props.onParamsChange({
+      sort,
+      current: page,
+      pageSize,
+    })
   }
 
   const onShowSizeChange = (page, size) => {
     setCurrent(page)
     setPageSize(size)
+
+    props.onParamsChange({
+      sort,
+      current,
+      pageSize: size,
+    })
+  }
+
+  const onSortChange = selectedSort => {
+    setSort(selectedSort)
+    props.onParamsChange({
+      sort: selectedSort,
+      current,
+      pageSize,
+    })
   }
 
   return (
@@ -68,7 +89,7 @@ const ProductPagination = props => {
             style={{ width: 120, float: 'left' }}
             placeholder={t('Sort by')}
             value={sort}
-            onChange={val => setSort(val)}
+            onChange={onSortChange}
           >
             {props.sortOptions.map(({ value, label }) => (
               <Option key={value} value={value}>
@@ -130,6 +151,8 @@ ProductPagination.propTypes = {
   range: PropTypes.arrayOf(PropTypes.number),
   current: PropTypes.number,
   pageSize: PropTypes.number,
+
+  onParamsChange: PropTypes.func,
 }
 
 ProductPagination.defaultProps = {
@@ -140,4 +163,7 @@ ProductPagination.defaultProps = {
   range: [],
   current: 1,
   pageSize: 10,
+
+  // noop
+  onParamsChange: () => {},
 }

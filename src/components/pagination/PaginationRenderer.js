@@ -3,7 +3,10 @@ import React, { useEffect, useState } from 'react'
 import { withRouter } from 'react-router-dom'
 
 import ProductPagination from './ProductPagination'
-import { paginationPropsFromQueryString } from '../../common/utils'
+import {
+  paginationPropsFromQueryString,
+  mergePaginationParamsToQueryString,
+} from '../../common/utils'
 import state from '../../local-state'
 
 const PaginationRenderer = ({ history }) => {
@@ -13,6 +16,14 @@ const PaginationRenderer = ({ history }) => {
     setParams(paginationPropsFromQueryString(history.location.search))
   }, [history.location.search])
 
+  const handlePaginationChange = paginationParams => {
+    const queryString = mergePaginationParamsToQueryString(
+      paginationParams,
+      history.location.search,
+    )
+    history.push(`/products?${queryString}`)
+  }
+
   // eslint-disable-next-line react/jsx-props-no-spreading
   return (
     <ProductPagination
@@ -21,6 +32,7 @@ const PaginationRenderer = ({ history }) => {
       sort={params.sort}
       total={101}
       sortOptions={state.productSortOptions}
+      onParamsChange={handlePaginationChange}
     />
   )
 }

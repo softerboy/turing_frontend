@@ -7,7 +7,7 @@ import Filter from './Filter'
 import FILTER_QUERY from '../../graphql/filter-query.graphql'
 import {
   filterToQueryString,
-  queryStringToDefaultValues,
+  filterPropsFromQueryString,
 } from '../../common/utils'
 
 const FilterRenderer = ({ history }) => {
@@ -15,7 +15,7 @@ const FilterRenderer = ({ history }) => {
   const [defaultValues, setDefaultValues] = useState({})
 
   useEffect(() => {
-    const values = queryStringToDefaultValues(history.location.search)
+    const values = filterPropsFromQueryString(history.location.search)
     setDefaultValues(values)
   }, [history.location.search])
 

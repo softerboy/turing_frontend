@@ -25,7 +25,7 @@ const toNumberArray = param => {
   return []
 }
 
-export const queryStringToDefaultValues = queryString => {
+export const filterPropsFromQueryString = queryString => {
   if (!queryString) return {}
 
   const { categories, colors, sizes, price } = qs.parse(queryString, {
@@ -61,7 +61,7 @@ export const filterToQueryString = (filterOptions, currentQueryString) => {
 }
 
 export const paginationPropsFromQueryString = queryString => {
-  const result = { page: 1, perPage: 10, sort: undefined }
+  const result = { page: 1, per_page: 10, sort: undefined }
   if (!queryString) return result
 
   const { page, per_page, sort = '' } = qs.parse(queryString, { parseNumbers })

@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect, useState } from 'react'
 import { withRouter } from 'react-router-dom'
+import * as PropTypes from 'prop-types'
 
 import ProductPagination from './ProductPagination'
 import {
@@ -9,7 +10,7 @@ import {
 } from '../../common/utils'
 import state from '../../local-state'
 
-const PaginationRenderer = ({ history }) => {
+const PaginationRenderer = ({ history, total }) => {
   const [params, setParams] = useState({})
 
   useEffect(() => {
@@ -30,7 +31,7 @@ const PaginationRenderer = ({ history }) => {
       current={params.page}
       pageSize={params.per_page}
       sort={params.sort}
-      total={101}
+      total={total}
       sortOptions={state.productSortOptions}
       onParamsChange={handlePaginationChange}
     />
@@ -38,3 +39,11 @@ const PaginationRenderer = ({ history }) => {
 }
 
 export default withRouter(PaginationRenderer)
+
+PaginationRenderer.propTypes = {
+  total: PropTypes.number,
+}
+
+PaginationRenderer.defaultProps = {
+  total: 0,
+}

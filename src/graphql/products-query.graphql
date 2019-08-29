@@ -1,0 +1,34 @@
+query Products(
+  $inCategory: [Int]
+  $inColor: [Int]
+  $inSize: [Int]
+  $inPrice: [Int]
+  $sortBy: ProductSort
+  $page: Int
+  $perPage: Int
+) {
+  products(
+    inCategory: $inCategory
+    inColor: $inColor
+    inSize: $inSize
+    inPrice: $inPrice
+    sortBy: $sortBy
+    page: $page
+    perPage: $perPage
+  ) {
+    data {
+      description
+      discounted_price
+      display
+      image
+      image_2
+      name
+      product_id
+      thumbnail
+      price
+    }
+    metadata {
+      totalItems
+    }
+  }
+}

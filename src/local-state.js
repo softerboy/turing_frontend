@@ -21,8 +21,8 @@ export default {
 
   productSortOptions: [
     {
-      value: 'category',
-      label: 'Category',
+      value: 'product_id',
+      label: 'Default sort',
       __typename: 'SortItem',
     },
     {

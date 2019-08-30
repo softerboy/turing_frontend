@@ -8,8 +8,10 @@ const PriceRenderer = ({ currency, price, discountedPrice }) => {
   if (discountedPrice) {
     return (
       <Text type="danger" strong>
-        {currency}
-        {`${discountedPrice.toFixed(2)} `}
+        <span style={{ fontSize: '1.4em' }}>
+          {currency}
+          {`${discountedPrice.toFixed(2)} `}
+        </span>
 
         <Text delete>
           {currency}
@@ -20,7 +22,7 @@ const PriceRenderer = ({ currency, price, discountedPrice }) => {
   }
 
   return (
-    <Text type="danger" strong>
+    <Text type="danger" style={{ fontSize: '1.4em' }} strong>
       {currency}
       {price.toFixed(2)}
     </Text>

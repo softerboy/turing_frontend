@@ -1,42 +1,16 @@
-/* eslint-disable camelcase */
-import React, { useContext } from 'react'
+import React from 'react'
 import * as PropTypes from 'prop-types'
-import { Card } from 'antd'
 
-import { PRODUCT_IMG_ROOT } from '../../common/constants'
-import styles from './ProductItem.module.less'
-import PriceRenderer from './PriceRenderer'
-import { AppContext } from '../context/AppContext'
+import ProductGridItemNormal from './ProductGridItemNormal'
+import ProductGridItemHover from './ProductGridItemHover'
+import styles from './ProductGridItem.module.less'
 
-const ProductGridItem = ({ product }) => {
-  const { currency } = useContext(AppContext)
-  const { name, image, price, discounted_price } = product
-
-  return (
-    <Card
-      className={styles.imgContainer}
-      cover={
-        <img
-          alt={image}
-          src={`${PRODUCT_IMG_ROOT}/${image}`}
-          className={styles.img}
-        />
-      }
-    >
-      <Card.Meta
-        style={{ minHeight: 80 }}
-        title={name}
-        description={
-          <PriceRenderer
-            currency={currency}
-            price={price}
-            discountedPrice={discounted_price}
-          />
-        }
-      />
-    </Card>
-  )
-}
+const ProductGridItem = ({ product }) => (
+  <div className={styles.cardContainer}>
+    <ProductGridItemNormal product={product} />
+    <ProductGridItemHover product={product} className={styles.cardHover} />
+  </div>
+)
 
 export default ProductGridItem
 

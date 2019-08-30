@@ -91,3 +91,6 @@ export const mergePaginationParamsToQueryString = (
 
   return qs.stringify(result, { arrayFormat })
 }
+
+export const getPriceIncludingDiscounted = ({ discounted_price, price }) =>
+  discounted_price > 0.0 ? discounted_price : price

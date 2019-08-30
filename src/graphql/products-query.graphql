@@ -26,7 +26,20 @@ query Products(
       product_id
       thumbnail
       price
+
+      colors {
+        color_id: attribute_id
+        name
+        value
+      }
+
+      sizes {
+        size_id: attribute_id
+        name
+        value
+      }
     }
+
     metadata {
       totalItems
     }

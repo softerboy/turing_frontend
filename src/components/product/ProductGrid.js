@@ -8,6 +8,7 @@ const { Item: ListItem } = List
 const grid = {
   gutter: 16,
   xs: 2,
+  sm: 2,
   md: 3,
   xxl: 5,
 }

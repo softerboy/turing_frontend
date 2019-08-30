@@ -13,8 +13,8 @@ import {
 
 const colWidth = {
   // prettier-ignore
-  filter:   { xs: 24, sm: 12, md: 10, lg: 8,  xl: 6,  xxl: 4 },
-  products: { xs: 24, sm: 12, md: 14, lg: 16, xl: 18, xxl: 20 },
+  filter:   { xs:  0, sm:  0, md:  0, lg: 6,  xl: 6,  xxl: 4 },
+  products: { xs: 24, sm: 24, md: 24, lg: 18, xl: 18, xxl: 20 },
 }
 
 /* eslint-disable react/prop-types */
@@ -48,6 +48,7 @@ const Home = ({ history }) => {
     }
 
     setVariables(newVariables)
+    // eslint-disable-next-line
   }, [history.location.search])
 
   return (

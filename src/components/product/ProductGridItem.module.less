@@ -1,0 +1,81 @@
+.imgContainer {
+  position: relative;
+  width: 100%;
+  padding-top: 100%; /* 1:1 Aspect Ratio */
+}
+
+.img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+.cardContainer {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: inline-block;
+	cursor: pointer !important;
+}
+
+.cardContainer .cardHover {
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 99;
+  text-align: center !important;
+  background-color: rgba(255, 255, 255, 0.95);
+	padding: 2.5rem 1rem 1rem 1rem;
+
+  transition: opacity 0.3s linear, transform 0.3s linear;
+}
+
+.cardContainer:hover {
+  transform: scale(1.02, 1.02);
+  box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.22);
+}
+
+.cardContainer:hover .cardHover {
+  opacity: 1;
+}
+
+.colorSelectContainer {
+	margin-top: 40px;
+
+	> span {
+		/* makes color select circle buttons justified into center */
+		display: inline-block;
+
+		> div {
+			/* make circles little bit smaller */
+			width: 24px;
+			height: 24px;
+		}
+	}
+}
+
+.sizeSelectContainer {
+	> span {
+		button {
+			min-width: 28px;
+			font-size: .6em;
+			font-weight: bold;
+		}
+	}
+}
+
+@media screen and (max-width: 494px) {
+	.cardContainer .cardHover {
+		display: none;
+	}
+
+	.cardContainer:hover {
+		transform: scale(1, 1);
+		box-shadow: none;
+	}
+}

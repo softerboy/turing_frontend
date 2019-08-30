@@ -83,8 +83,8 @@ const ProductPagination = props => {
 
   return (
     <div>
-      <Row>
-        <Col span={8}>
+      <Row className="paginationSecondaryContainer">
+        <Col span={10}>
           <Select
             style={{ width: 120, float: 'left' }}
             placeholder={t('Sort by')}
@@ -99,14 +99,12 @@ const ProductPagination = props => {
           </Select>
         </Col>
 
-        <Col style={{ textAlign: 'center', lineHeight: '32px' }} span={8}>
-          <Text strong>
-            {t('View')}: {range[0]}
-          </Text>{' '}
-          | {range[1]}
+        <Col style={{ textAlign: 'center', lineHeight: '32px' }} span={4}>
+          {/* prettier-ignore */}
+          <Text strong>{t('View')}: {range[0]}</Text> | {range[1]}
         </Col>
 
-        <Col span={8}>
+        <Col span={10}>
           <Pagination
             current={current}
             className="paginationSecondary"
@@ -123,12 +121,23 @@ const ProductPagination = props => {
       <Row style={{ marginTop: 16 }}>
         <Col className="paginationMain">
           <Pagination
+            className="paginationLg"
             current={current}
             total={props.total}
             pageSize={pageSize}
             itemRender={itemRender}
             showTotal={showTotal}
             onChange={onChange}
+          />
+          <Pagination
+            className="paginationXs"
+            current={current}
+            total={props.total}
+            pageSize={pageSize}
+            itemRender={itemRender}
+            showTotal={showTotal}
+            onChange={onChange}
+            size="small"
           />
         </Col>
       </Row>

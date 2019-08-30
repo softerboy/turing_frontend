@@ -24,7 +24,7 @@ const ProductGridItemNormal = ({ product }) => {
       }
     >
       <Card.Meta
-        style={{ minHeight: 80 }}
+        style={{ minHeight: 85 }}
         title={name}
         description={
           <PriceRenderer

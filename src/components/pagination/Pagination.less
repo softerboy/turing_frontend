@@ -1,68 +1,101 @@
-@import "~antd/lib/style/themes/default";
+@import '~antd/lib/style/themes/default';
 
 @borderRadius: 50%;
 @marginLabel: 16px;
 
 .spacer {
-	clear: both;
-	margin: 32px;
+  clear: both;
+  margin: 32px;
+}
+
+.paginationLg {
+	display: block;
+}
+
+.paginationXs {
+	display: none;
 }
 
 .paginationSecondary {
-	float: right;
+  float: right;
 
-	.ant-pagination-item,
-	.ant-pagination-prev,
-	.ant-pagination-next,
-	.ant-pagination-jump-next,
-	.ant-pagination-jump-prev
-	{
-		display: none;
-	}
+  .ant-pagination-item,
+  .ant-pagination-prev,
+  .ant-pagination-next,
+  .ant-pagination-jump-next,
+  .ant-pagination-jump-prev {
+    display: none;
+  }
 }
 
 .paginationMain {
-	.ant-pagination {
-		text-align: center;
+  .ant-pagination {
+    text-align: center;
+  }
+
+  .ant-pagination-prev {
+    float: left;
+  }
+
+  .ant-pagination-next {
+    float: right;
+  }
+
+  .ant-pagination-item {
+    background-color: transparent;
+    border: none;
+
+    a {
+      font-weight: bold;
+    }
+  }
+
+  .ant-pagination-item-active {
+    border-radius: @borderRadius;
+    background-color: @primary-color;
+
+    a {
+      color: @white !important;
+    }
+  }
+
+  .arrowIcon {
+    background-color: #efefef;
+    padding: 8px;
+    border-radius: @borderRadius;
+  }
+
+  .prevLabel {
+    margin-left: @marginLabel;
+  }
+
+  .nextLabel {
+    margin-right: @marginLabel;
+  }
+}
+
+.paginationContainer {
+}
+
+@media screen and (max-width: 630px) {
+  .prevLabel,
+  .nextLabel {
+    display: none;
+  }
+
+  .paginationSecondaryContainer {
+    display: none;
+  }
+
+  .paginationMain {
+    margin-top: 30px;
+  }
+
+	.paginationLg {
+		display: none;
 	}
 
-	.ant-pagination-prev {
-		float: left;
-	}
-
-	.ant-pagination-next {
-		float: right;
-	}
-
-	.ant-pagination-item {
-		background-color: transparent;
-		border: none;
-
-		a {
-			font-weight: bold;
-		}
-	}
-
-	.ant-pagination-item-active {
-		border-radius: @borderRadius;
-		background-color: @primary-color;
-
-		a {
-			color: @white !important;
-		}
-	}
-
-	.arrowIcon {
-		background-color: #EFEFEF;
-		padding: 8px;
-		border-radius: @borderRadius;
-	}
-
-	.prevLabel {
-		margin-left: @marginLabel;
-	}
-
-	.nextLabel {
-		margin-right: @marginLabel;
+	.paginationXs {
+		display: block;
 	}
 }

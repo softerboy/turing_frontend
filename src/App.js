@@ -12,6 +12,7 @@ import data from './local-state'
 import resolvers from './resolvers'
 import Boot from './components/Boot'
 import { USER_KEY } from './common/constants'
+import Product from './pages/Product'
 
 const cache = new InMemoryCache()
 cache.writeData({ data })
@@ -58,6 +59,7 @@ const App = () => (
               path="/secret"
               component={() => <h1>Secret</h1>}
             />
+            <Route exact path="/product/:productId" component={Product} />
           </Switch>
         </BrowserRouter>
       </AppProvider>

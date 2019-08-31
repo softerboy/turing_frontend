@@ -1,0 +1,23 @@
+query Product($product_id: Int!) {
+  product(product_id: $product_id) {
+    name
+    product_id
+    description
+    discounted_price
+    price
+    image
+    image_2
+
+    colors {
+      name
+      value
+      color_id: attribute_id
+    }
+
+    sizes {
+      name
+      value
+      size_id: attribute_id
+    }
+  }
+}

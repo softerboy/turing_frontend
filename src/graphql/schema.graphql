@@ -1,120 +1,122 @@
 directive @client on FIELD | FIELD_DEFINITION
 
 type Query {
-	me: RegisterResponse
+  me: RegisterResponse
 
-	# client side queries
-	auth: RegisterResponse
+  # client side queries
+  auth: RegisterResponse
 
-	departments: [Department]
-	attributes(name: String): [Attribute]
-	# used by filter's price slider range
-	priceRange: PriceRange!
+  departments: [Department]
+  attributes(name: String): [Attribute]
+  # used by filter's price slider range
+  priceRange: PriceRange!
 
-	products(
-		inCategory: [Int]
-		inColor: [Int]
-		inSize: [Int]
-		inPrice: [Int]
-		sortBy: ProductSort
-		page: Int
-		perPage: Int
-	): ProductResponse
+  products(
+    inCategory: [Int]
+    inColor: [Int]
+    inSize: [Int]
+    inPrice: [Int]
+    sortBy: ProductSort
+    page: Int
+    perPage: Int
+  ): ProductResponse
+
+  product(product_id: Int!): Product
 }
 
 type Mutation {
-	customerRegister(
-		name: String!
+  customerRegister(
+    name: String!
+    email: String!
+    password: String!
+  ): RegisterResponse
+
+  # prettier-ignore
+  customerLogin(
 		email: String!
 		password: String!
 	): RegisterResponse
 
-	# prettier-ignore
-	customerLogin(
-		email: String!
-		password: String!
-	): RegisterResponse
-
-	customerLogout: Boolean
+  customerLogout: Boolean
 }
 
 type RegisterResponse {
-	customer_id: Int!
-	name: String!
-	email: String!
-	address_1: String
-	address_2: String
-	city: String
-	region: String
-	postal_code: String
-	country: String
-	shipping_region_id: Int!
-	day_phone: String
-	eve_phone: String
-	mob_phone: String
-	credit_card: String
-	accessToken: String!
-	expires_in: String!
+  customer_id: Int!
+  name: String!
+  email: String!
+  address_1: String
+  address_2: String
+  city: String
+  region: String
+  postal_code: String
+  country: String
+  shipping_region_id: Int!
+  day_phone: String
+  eve_phone: String
+  mob_phone: String
+  credit_card: String
+  accessToken: String!
+  expires_in: String!
 }
 
 type Department {
-	department_id: Int!
-	name: String!
-	description: String
-	categories: [Category]
+  department_id: Int!
+  name: String!
+  description: String
+  categories: [Category]
 }
 
 type Category {
-	category_id: Int!
-	department_id: Int!
-	name: String!
-	description: String
+  category_id: Int!
+  department_id: Int!
+  name: String!
+  description: String
 }
 
 type Attribute {
-	attribute_id: Int!
-	name: String!
-	value: String!
+  attribute_id: Int!
+  name: String!
+  value: String!
 }
 
 type PriceRange {
-	max: Float!
-	min: Float!
+  max: Float!
+  min: Float!
 }
 
 type ProductResponse {
-	metadata: PaginationMetadata
-	data: [Product]
+  metadata: PaginationMetadata
+  data: [Product]
 }
 
 type PaginationMetadata {
-	totalItems: Int!
-	currentPage: Int!
-	pageSize: Int!
-	totalPages: Int!
-	startPage: Int!
-	endPage: Int!
-	startIndex: Int!
-	endIndex: Int!
-	pages: [Int!]
+  totalItems: Int!
+  currentPage: Int!
+  pageSize: Int!
+  totalPages: Int!
+  startPage: Int!
+  endPage: Int!
+  startIndex: Int!
+  endIndex: Int!
+  pages: [Int!]
 }
 
 type Product {
-	product_id: Int!
-	name: String!
-	description: String!
-	price: Float!
-	discounted_price: Float!
-	image: String
-	image_2: String
-	thumbnail: String
-	display: Int!
+  product_id: Int!
+  name: String!
+  description: String!
+  price: Float!
+  discounted_price: Float!
+  image: String
+  image_2: String
+  thumbnail: String
+  display: Int!
 
-	colors: [Attribute]
-	sizes: [Attribute]
+  colors: [Attribute]
+  sizes: [Attribute]
 }
 
 enum ProductSort {
-	name
-	price
+  name
+  price
 }

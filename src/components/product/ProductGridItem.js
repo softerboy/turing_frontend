@@ -1,16 +1,20 @@
 import React from 'react'
 import * as PropTypes from 'prop-types'
+import { Link } from 'react-router-dom'
 
 import ProductGridItemNormal from './ProductGridItemNormal'
 import ProductGridItemHover from './ProductGridItemHover'
 import styles from './ProductGridItem.module.less'
 
-const ProductGridItem = ({ product }) => (
-  <div className={styles.cardContainer}>
-    <ProductGridItemNormal product={product} />
-    <ProductGridItemHover product={product} className={styles.cardHover} />
-  </div>
-)
+const ProductGridItem = ({ product }) => {
+  const to = { pathname: 'product', params: { productId: product.product_id } }
+  return (
+    <Link to={to} className={styles.cardContainer}>
+      <ProductGridItemNormal product={product} />
+      <ProductGridItemHover product={product} className={styles.cardHover} />
+    </Link>
+  )
+}
 
 export default ProductGridItem
 

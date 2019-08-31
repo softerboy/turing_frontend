@@ -15,6 +15,7 @@
     "react-apollo": "^3.0.0",
     "react-dom": "^16.8.6",
     "react-i18next": "^10.11.4",
+    "react-image-magnify": "^2.7.4",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.1.0"
   },

@@ -1,18 +1,20 @@
 /* eslint-disable react/prop-types */
 import React from 'react'
 import { useQuery } from '@apollo/react-hooks'
-import { Col, Row } from 'antd'
+import { Card, Col, Row } from 'antd'
 
 import LayoutMain from '../components/layout/LayoutMain'
 import PRODUCT_QUERY from '../graphql/product-query.graphql'
 import ProductCarousel from '../components/product/ProductCarousel'
 
 import styles from './Pages.module.less'
+import ProductDetails from '../components/product/ProductDetails'
 
 const grid = {
   // prettier-ignore
   /* eslint-disable */
-  carousel: { xs: 24, sm: 12, lg: 7 }
+  carousel: { xs: 24, sm: 12, lg: 7 },
+  details: { xs: 24, sm: 12, lg: 17 },
 }
 
 const Product = ({ match }) => {
@@ -29,12 +31,18 @@ const Product = ({ match }) => {
   return (
     <LayoutMain>
       <Row className={styles.product}>
-        <Col xs={{ offset: 1, span: 22 }} md={{offset: 2, span: 20}}>
-          <Row>
-            <Col {...grid.carousel}>
-              <ProductCarousel product={data.product} />
-            </Col>
-          </Row>
+        <Col xs={{ offset: 1, span: 22 }} md={{ offset: 2, span: 20 }}>
+          <Card>
+            <Row gutter={32}>
+              <Col {...grid.carousel}>
+                <ProductCarousel product={data.product} />
+              </Col>
+
+              <Col {...grid.details}>
+                <ProductDetails product={data.product} />
+              </Col>
+            </Row>
+          </Card>
         </Col>
       </Row>
     </LayoutMain>

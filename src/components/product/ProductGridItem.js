@@ -7,7 +7,7 @@ import ProductGridItemHover from './ProductGridItemHover'
 import styles from './ProductGridItem.module.less'
 
 const ProductGridItem = ({ product }) => {
-  const to = { pathname: 'product', params: { productId: product.product_id } }
+  const to = `/product/${product.product_id}`
   return (
     <Link to={to} className={styles.cardContainer}>
       <ProductGridItemNormal product={product} />

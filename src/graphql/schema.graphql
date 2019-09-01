@@ -114,6 +114,7 @@ type Product {
 
   colors: [Attribute]
   sizes: [Attribute]
+  categories: [Category]
 }
 
 enum ProductSort {

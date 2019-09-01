@@ -19,5 +19,11 @@ query Product($product_id: Int!) {
       value
       size_id: attribute_id
     }
+
+    categories {
+      category_id
+      name
+      description
+    }
   }
 }

@@ -9,6 +9,7 @@ import ProductCarousel from '../components/product/ProductCarousel'
 
 import styles from './Pages.module.less'
 import ProductDetails from '../components/product/ProductDetails'
+import ProductReviewForm from '../components/product/ProductReviewForm'
 
 const grid = {
   // prettier-ignore
@@ -43,6 +44,11 @@ const Product = ({ match }) => {
               </Col>
             </Row>
           </Card>
+          <Row>
+            <Col span={24}>
+              <ProductReviewForm onSubmit={console.log} />
+            </Col>
+          </Row>
         </Col>
       </Row>
     </LayoutMain>

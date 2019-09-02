@@ -1,0 +1,13 @@
+mutation AddProductReview($product_id: Int!, $review: String!, $rating: Int!) {
+  addProductReview(product_id: $product_id, review: $review, rating: $rating) {
+    review
+    review_id
+    created_on
+    rating
+    owner {
+      customer_id
+      email
+      name
+    }
+  }
+}

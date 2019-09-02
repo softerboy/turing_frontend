@@ -7,7 +7,7 @@ const { Title } = Typography
 const { TextArea } = Input
 const { Item: FormItem } = Form
 
-const ProductReviewForm = props => {
+const ReviewForm = props => {
   const {
     form: { getFieldDecorator },
     loading,
@@ -85,4 +85,4 @@ const ProductReviewForm = props => {
   )
 }
 
-export default Form.create({ name: 'review-form' })(ProductReviewForm)
+export default Form.create({ name: 'review-form' })(ReviewForm)

@@ -59,7 +59,7 @@ const App = () => (
               path="/secret"
               component={() => <h1>Secret</h1>}
             />
-            <Route exact path="/product/:productId" component={Product} />
+            <Route exact path="/product/:product_id" component={Product} />
           </Switch>
         </BrowserRouter>
       </AppProvider>

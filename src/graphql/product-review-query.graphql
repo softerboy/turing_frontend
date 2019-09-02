@@ -1,0 +1,18 @@
+query ProductReview($product_id: Int!, $count: Int, $cursor: String) {
+  product(product_id: $product_id) {
+    reviews(count: $count, cursor: $cursor) {
+      data {
+        review_id
+        review
+        created_on
+        rating
+        owner {
+          name
+          email
+          customer_id
+        }
+      }
+      next_cursor
+    }
+  }
+}

@@ -121,6 +121,8 @@ type Product {
   colors: [Attribute]
   sizes: [Attribute]
   categories: [Category]
+
+  reviews(cursor: String, count: Int): ReviewResponse
 }
 
 enum ProductSort {

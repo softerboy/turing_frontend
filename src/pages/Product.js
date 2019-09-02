@@ -9,7 +9,8 @@ import ProductCarousel from '../components/product/ProductCarousel'
 
 import styles from './Pages.module.less'
 import ProductDetails from '../components/product/ProductDetails'
-import ProductReviewFormRenderer from '../components/product/review/ReviewFormRenderer'
+import ReviewFormRenderer from '../components/product/review/ReviewFormRenderer'
+import ReviewListRenderer from '../components/product/review/ReviewListRenderer'
 
 const grid = {
   // prettier-ignore
@@ -19,10 +20,9 @@ const grid = {
 }
 
 const Product = ({ match }) => {
+  const product_id = Number(match.params.product_id)
   const { data, loading, error } = useQuery(PRODUCT_QUERY, {
-    variables: {
-      product_id: Number(match.params.product_id),
-    },
+    variables: { product_id },
   })
 
   if (loading) return <div>Loading</div>
@@ -46,7 +46,10 @@ const Product = ({ match }) => {
           </Card>
           <Row>
             <Col span={24}>
-              <ProductReviewFormRenderer />
+              <ReviewFormRenderer />
+            </Col>
+            <Col span={24}>
+              <ReviewListRenderer product_id={product_id} />
             </Col>
           </Row>
         </Col>

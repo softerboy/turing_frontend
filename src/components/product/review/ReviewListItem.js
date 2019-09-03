@@ -1,12 +1,37 @@
 import React from 'react'
-import { Col, Rate, Row, Typography } from 'antd'
+import { Col, Icon, Rate, Row, Typography, notification } from 'antd'
 import moment from 'moment'
 import * as PropTypes from 'prop-types'
 
 const { Title, Text, Paragraph } = Typography
 
+// eslint-disable-next-line react/prop-types
+const IconText = ({ type, text, style, onClick }) => (
+  <span>
+    <Icon
+      onClick={onClick}
+      type={type}
+      style={{
+        marginRight: 8,
+        padding: 8,
+        background: '#EFEFEF',
+        borderRadius: '50%',
+        ...style,
+      }}
+    />
+    {text}
+  </span>
+)
+
 const ReviewListItem = props => {
   const { review } = props
+
+  const showMessage = type => {
+    notification.info({
+      message: '😃😃😃',
+      description: `${type} button clicked. Replace with your own action`,
+    })
+  }
 
   return (
     <Row type="flex" style={{ marginBottom: 40 }}>
@@ -19,6 +44,20 @@ const ReviewListItem = props => {
       </Col>
       <Col md={{ span: 18, order: 2 }} xs={{ order: 1 }}>
         <Paragraph>{review.review}</Paragraph>
+        <div>
+          <IconText
+            style={{ color: 'red' }}
+            type="heart"
+            text="113"
+            onClick={() => showMessage('Heart')}
+          />
+          <IconText
+            style={{ marginLeft: 32 }}
+            type="message"
+            text="6"
+            onClick={() => showMessage('Message')}
+          />
+        </div>
       </Col>
     </Row>
   )

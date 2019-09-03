@@ -1,5 +1,6 @@
-import React, { useContext } from 'react'
+import React, { useContext, useRef } from 'react'
 import { Link, withRouter } from 'react-router-dom'
+import * as PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 import { Button, Row, Col, notification } from 'antd'
 import { useMutation } from '@apollo/react-hooks'
@@ -12,7 +13,9 @@ import ADD_PRODUCT_REVIEW_MUTATION from '../../../graphql/add-product-review-mut
 const ReviewFormRenderer = props => {
   // prettier-ignore
   const { location, match, onReviewAdded } = props
+
   const { t } = useTranslation()
+  const reviewFormRef = useRef()
   const { isLoggedIn } = useContext(AppContext)
   const [addReview, { loading, data, error }] = useMutation(
     ADD_PRODUCT_REVIEW_MUTATION,
@@ -34,9 +37,14 @@ const ReviewFormRenderer = props => {
     const variables = { product_id, review, rating }
 
     await addReview({ variables })
+
+    reviewFormRef.current.resetFields()
   }
 
-  if (isLoggedIn) return <ProductReviewForm onSubmit={onReviewFormSubmit} />
+  if (isLoggedIn)
+    return (
+      <ProductReviewForm ref={reviewFormRef} onSubmit={onReviewFormSubmit} />
+    )
 
   return (
     <Row type="flex" justify="center">
@@ -65,6 +73,10 @@ const ReviewFormRenderer = props => {
 }
 
 export default withRouter(ReviewFormRenderer)
+
+ReviewFormRenderer.propTypes = {
+  onReviewAdded: PropTypes.func,
+}
 
 ReviewFormRenderer.defaultProps = {
   onReviewAdded: () => {}, // noop

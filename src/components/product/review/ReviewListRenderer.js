@@ -1,8 +1,12 @@
-import React from 'react'
+import React, {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useState,
+} from 'react'
 import { Button } from 'antd'
 import { useQuery } from '@apollo/react-hooks'
 import { useTranslation } from 'react-i18next'
-import { withRouter } from 'react-router-dom'
 
 import ReviewList from './ReviewList'
 import PRODUCT_REVIEW_QUERY from '../../../graphql/product-review-query.graphql'
@@ -11,8 +15,11 @@ const LOADING = 1
 const FETCH_MORE = 3
 
 /* eslint-disable react/prop-types, camelcase */
-const ReviewListRenderer = ({ product_id }) => {
+const ReviewListRenderer = (props, ref) => {
+  const { product_id } = props
   const { t } = useTranslation()
+  const [reviews, setReviews] = useState([])
+
   const { data, error, fetchMore, networkStatus } = useQuery(
     PRODUCT_REVIEW_QUERY,
     {
@@ -26,12 +33,22 @@ const ReviewListRenderer = ({ product_id }) => {
     },
   )
 
+  useImperativeHandle(ref, () => ({
+    pushReview: review => setReviews([review, ...reviews]),
+  }))
+
+  useEffect(() => {
+    if (data && data.product) {
+      setReviews(data.product.reviews.data)
+    }
+  }, [data])
+
   if (networkStatus === LOADING) return <div>Loading...</div>
 
   if (error) return <div>Ops ;-)</div>
 
   // eslint-disable-next-line camelcase
-  const { data: reviews, next_cursor } = data.product.reviews
+  const { next_cursor } = data.product.reviews
 
   const onFetchMoreClick = async () => {
     await fetchMore({
@@ -51,7 +68,7 @@ const ReviewListRenderer = ({ product_id }) => {
             ...prev.product,
             reviews: {
               ...prev.product.reviews,
-              data: [...prev.product.reviews.data, ...result],
+              data: [...reviews, ...result],
               next_cursor: new_cursor,
             },
           },
@@ -78,4 +95,4 @@ const ReviewListRenderer = ({ product_id }) => {
   )
 }
 
-export default withRouter(ReviewListRenderer)
+export default forwardRef(ReviewListRenderer)

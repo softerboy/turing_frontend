@@ -26,7 +26,7 @@ const ReviewList = props => {
   const noReviewsYet = !reviews || !reviews.length
   if (noReviewsYet)
     return template(
-      <Typography style={{ textAlign: 'center' }}>
+      <Typography style={{ textAlign: 'center', marginBottom: 32 }}>
         <Text>{t('There are no customer reviews yet')}</Text>
       </Typography>,
     )

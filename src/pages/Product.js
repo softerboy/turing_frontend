@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React from 'react'
+import React, { useRef } from 'react'
 import { useQuery } from '@apollo/react-hooks'
 import { Card, Col, Row } from 'antd'
 
@@ -21,6 +21,8 @@ const grid = {
 
 const Product = ({ match }) => {
   const product_id = Number(match.params.product_id)
+  const reviewListRef = useRef(null)
+
   const { data, loading, error } = useQuery(PRODUCT_QUERY, {
     variables: { product_id },
   })
@@ -28,6 +30,8 @@ const Product = ({ match }) => {
   if (loading) return <div>Loading</div>
 
   if (error) return <div>Ops ;-)</div>
+
+  const pushReview = review => reviewListRef.current.pushReview(review)
 
   return (
     <LayoutMain>
@@ -46,10 +50,10 @@ const Product = ({ match }) => {
           </Card>
           <Row>
             <Col span={24}>
-              <ReviewFormRenderer />
+              <ReviewFormRenderer onReviewAdded={pushReview} />
             </Col>
             <Col span={24}>
-              <ReviewListRenderer product_id={product_id} />
+              <ReviewListRenderer ref={reviewListRef} product_id={product_id} />
             </Col>
           </Row>
         </Col>

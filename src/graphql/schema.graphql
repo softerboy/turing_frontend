@@ -5,6 +5,7 @@ type Query {
 
   # client side queries
   auth: RegisterResponse
+  cartInfo: [ShoppingCart]
 
   departments: [Department]
   attributes(name: String): [Attribute]
@@ -22,6 +23,12 @@ type Query {
   ): ProductResponse
 
   product(product_id: Int!): Product
+
+  generateUniqueCartId: String!
+
+  cart(cart_id: String!): [ShoppingCart]
+  getSaved(cart_id: String!): [ShoppingCart]
+  totalAmount(cart_id: String!): Float!
 }
 
 type Mutation {
@@ -44,6 +51,18 @@ type Mutation {
     review: String!
     rating: Int!
   ): Review
+
+  addToCart(
+    cart_id: String!
+    product_id: Int!
+    attributes: String!
+  ): [ShoppingCart!]
+  updateCart(item_id: Int!, quantity: Int!): [ShoppingCart]
+  removeItem(item_id: Int!): [ShoppingCart]
+  # returns an empty array after removal
+  emptyCart(cart_id: String!): [ShoppingCart]
+  moveToCart(item_id: Int!): [ShoppingCart]
+  saveForLater(item_id: Int!): [ShoppingCart]
 }
 
 type RegisterResponse {
@@ -149,4 +168,15 @@ type ReviewResponse {
   data: [Review]
   # will be null if next page isn't available
   next_cursor: String
+}
+
+type ShoppingCart {
+  item_id: Int!
+  name: String!
+  attributes: String!
+  product_id: Int!
+  price: Float!
+  quantity: Int!
+  image: String!
+  subtotal: Float!
 }

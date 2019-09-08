@@ -1,11 +1,12 @@
 /* eslint-disable react/prop-types, camelcase */
-import React from 'react'
+import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Breadcrumb, Button, Col, Row, Typography } from 'antd'
+import { Breadcrumb, Col, Row, Typography } from 'antd'
 
 import PriceRenderer from './PriceRenderer'
 import ColorSelect from '../filter/ColorSelect'
 import SizeSelect from '../filter/SizeSelect'
+import AddToCartActionButton from '../cart/AddToCartActionButton'
 
 const { Text, Title, Paragraph } = Typography
 
@@ -30,6 +31,16 @@ function renderCategories(categories) {
 // eslint-disable-next-line react/prop-types
 const ProductDetails = ({ product }) => {
   const { t } = useTranslation()
+  const [color, setColor] = useState(null)
+  const [size, setSize] = useState(null)
+
+  const onColorChange = selectedColor => setColor(selectedColor)
+  const onSizeChange = selectedSize => setSize(selectedSize)
+
+  let attrs = null
+  if (color && size) {
+    attrs = `${color.value}, ${size.value}`
+  }
 
   return (
     <Row>
@@ -57,20 +68,29 @@ const ProductDetails = ({ product }) => {
         <Title type="secondary" level={4}>
           {t('Color')}
         </Title>
-        <ColorSelect colors={product.colors} />
+        <ColorSelect
+          colors={product.colors}
+          defaultColorIds={color ? [color.color_id] : []}
+          onChange={onColorChange}
+        />
       </Col>
 
       <Col span={24} style={style.spacer}>
         <Title type="secondary" level={4}>
           {t('Size')}
         </Title>
-        <SizeSelect sizes={product.sizes} />
+        <SizeSelect
+          sizes={product.sizes}
+          defaultSizeIds={size ? [size.size_id] : []}
+          onChange={onSizeChange}
+        />
       </Col>
 
       <Col span={24} style={style.spacer}>
-        <Button type="primary" icon="shopping-cart" shape="round" size="large">
-          {t('Add to cart')}
-        </Button>
+        <AddToCartActionButton
+          product_id={product.product_id}
+          attributes={attrs}
+        />
       </Col>
 
       <Col span={24} style={style.spacer}>

@@ -1,0 +1,3 @@
+query GENERATE_CART_ID {
+  cart_id: generateUniqueCartId
+}

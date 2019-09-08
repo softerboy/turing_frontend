@@ -17,4 +17,14 @@ query AppContext {
     accessToken
     expires_in
   }
+
+  cartInfo @client {
+    attributes
+    image
+    item_id
+    price
+    subtotal
+    quantity
+    product_id
+  }
 }

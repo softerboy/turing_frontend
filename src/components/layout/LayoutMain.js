@@ -15,13 +15,24 @@ const LayoutMain = props => {
   const { isLoggedIn } = useContext(AppContext)
 
   return (
+    /*
+     *  we will hide pre-header if current page is
+     *  login/register page or user is already logged in
+     */
     <Layout>
-      {/* hide if current page is login/register
-          or user is already logged in */}
-      {hidePreHeader || isLoggedIn || <PreHeader />}
-      <Header style={{ lineHeight: 0 }}>
-        <HeaderMain titleOnly={hidePreHeader} />
-      </Header>
+      <div
+        style={{
+          position: 'sticky',
+          top: 0,
+          zIndex: 999999999,
+          background: 'white',
+        }}
+      >
+        {hidePreHeader || isLoggedIn || <PreHeader />}
+        <Header style={{ lineHeight: 0 }}>
+          <HeaderMain titleOnly={hidePreHeader} />
+        </Header>
+      </div>
       <Content style={{ minHeight: '100vh' }}>
         <Row>
           <Col span={22} offset={1}>

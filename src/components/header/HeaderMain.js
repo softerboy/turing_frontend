@@ -40,7 +40,12 @@ const SearchIcon = <Icon type="search" />
 
 const HeaderMain = ({ titleOnly }) => {
   const { t } = useTranslation()
-  const { isLoggedIn, auth } = useContext(AppContext)
+  const { isLoggedIn, auth, cartInfo } = useContext(AppContext)
+
+  const cartProductCount = cartInfo.reduce(
+    (total, { quantity }) => total + quantity,
+    0,
+  )
 
   // called when logout error
   const onError = err => {
@@ -127,7 +132,7 @@ const HeaderMain = ({ titleOnly }) => {
             <Badge
               className={styles.cart}
               style={{ backgroundColor: '#fff' }}
-              count={0}
+              count={cartProductCount}
               showZero
             >
               <Icon type="shopping-cart" />

@@ -1,0 +1,12 @@
+mutation AddToCart($cart_id: String!, $product_id: Int!, $attributes: String!) {
+  addToCart(cart_id: $cart_id, product_id: $product_id, attributes: $attributes) {
+    item_id
+    name
+    attributes
+    image
+    price
+    quantity
+    subtotal
+    product_id
+  }
+}

@@ -6,6 +6,9 @@
 */
 import qs from 'query-string'
 
+import { CART_ID_KEY } from './constants'
+import GENERATE_CART_ID_QUERY from '../graphql/cart-id-query.graphql'
+
 const arrayFormat = 'comma'
 const parseNumbers = true
 
@@ -94,3 +97,16 @@ export const mergePaginationParamsToQueryString = (
 
 export const getPriceIncludingDiscounted = ({ discounted_price, price }) =>
   discounted_price > 0.0 ? discounted_price : price
+
+export const getCartId = async client => {
+  // check cart id exists in localStorage
+  const cartId = window.localStorage.getItem(CART_ID_KEY)
+  if (cartId && cartId.length) return cartId
+
+  // prettier-ignore
+  // eslint-disable-next-line react/prop-types
+  const { data: { cart_id } } = await client.query({ query: GENERATE_CART_ID_QUERY })
+  // save cartId for future use
+  window.localStorage.setItem(CART_ID_KEY, cart_id)
+  return cart_id
+}

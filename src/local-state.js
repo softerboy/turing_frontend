@@ -19,6 +19,8 @@ export default {
     __typename: 'RegisterResponse',
   },
 
+  cartInfo: [],
+
   productSortOptions: [
     {
       value: 'product_id',

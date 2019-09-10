@@ -24,7 +24,7 @@ const LayoutMain = props => {
         style={{
           position: 'sticky',
           top: 0,
-          zIndex: 999999999,
+          zIndex: 99999,
           background: 'white',
         }}
       >

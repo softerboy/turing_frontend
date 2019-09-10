@@ -6,6 +6,7 @@ type Query {
   # client side queries
   auth: RegisterResponse
   cartInfo: [ShoppingCart]
+  cartTotalAmount: Float!
 
   departments: [Department]
   attributes(name: String): [Attribute]

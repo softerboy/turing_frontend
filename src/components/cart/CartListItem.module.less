@@ -1,0 +1,36 @@
+@import '~antd/lib/style/themes/default';
+
+.image {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #e3e3e3;
+}
+
+.closeIcon {
+  color: @primary-color;
+  margin-right: 8px;
+}
+
+.counter,
+.price {
+  text-align: right;
+}
+
+.cartRow {
+	width: 100%;
+	display: flex;
+	flex-flow: row wrap;
+	align-items: center;
+}
+
+@media screen and (max-width: 357px) {
+  .price {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 767px) {
+	.cartRow {
+		display: block;
+	}
+}

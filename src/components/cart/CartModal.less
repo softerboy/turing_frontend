@@ -1,0 +1,35 @@
+@import "~antd/lib/style/themes/default";
+
+.ant-modal-wrap {
+  z-index: 9999999999 !important;
+}
+
+.ant-modal-footer {
+	padding: 16px;
+	background: #EFEFEF;
+}
+
+.cartModalFooter {
+	button {
+		font-weight: bold;
+		font-size: 1em !important;
+		min-width: 170px;
+	}
+
+	button:first-child {
+		float: left;
+
+		border: 1px solid @primary-color;
+		color: @primary-color;
+	}
+}
+
+@media screen and (max-width: 474px) {
+	.cartModalFooter {
+		button:first-child {
+			float: right;
+			margin-bottom: 16px;
+			margin-left: 16px;
+		}
+	}
+}

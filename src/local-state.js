@@ -20,6 +20,7 @@ export default {
   },
 
   cartInfo: [],
+  cartTotalAmount: 0.0,
 
   productSortOptions: [
     {

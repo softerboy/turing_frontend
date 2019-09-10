@@ -9,4 +9,6 @@ query Cart($cart_id: String!) {
     subtotal
     product_id
   }
+
+  totalAmount(cart_id: $cart_id)
 }

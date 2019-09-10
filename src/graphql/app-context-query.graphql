@@ -20,6 +20,7 @@ query AppContext {
 
   cartInfo @client {
     attributes
+    name
     image
     item_id
     price
@@ -27,4 +28,6 @@ query AppContext {
     quantity
     product_id
   }
+  # prettier-ignore
+  cartTotalAmount @client
 }

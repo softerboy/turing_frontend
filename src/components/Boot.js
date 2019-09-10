@@ -14,12 +14,14 @@ const Boot = ({ children }) => {
     // eslint-disable-next-line camelcase
     getCartId(client).then(async cart_id => {
       // prettier-ignore
-      const { data: { cart } } = await client.query({
+      const { data: { cart, totalAmount } } = await client.query({
         query: CART_QUERY,
         variables: { cart_id },
       })
 
-      client.writeData({ data: { cartInfo: cart } })
+      client.writeData({
+        data: { cartInfo: cart, cartTotalAmount: totalAmount },
+      })
     })
   }, [client])
 

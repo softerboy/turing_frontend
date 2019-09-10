@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import * as PropTypes from 'prop-types'
 import {
   Typography,
@@ -23,6 +23,7 @@ import localState from '../../local-state'
 
 import CUSTOMER_LOGOUT from '../../graphql/customer-logout-mutation.graphql'
 import { USER_KEY } from '../../common/constants'
+import CartModal from '../cart/CartModal'
 
 const { Title } = Typography
 const { Item } = Menu
@@ -40,12 +41,15 @@ const SearchIcon = <Icon type="search" />
 
 const HeaderMain = ({ titleOnly }) => {
   const { t } = useTranslation()
+  const [showModal, setShowModal] = useState(false)
   const { isLoggedIn, auth, cartInfo } = useContext(AppContext)
 
   const cartProductCount = cartInfo.reduce(
     (total, { quantity }) => total + quantity,
     0,
   )
+
+  const showCart = () => setShowModal(true)
 
   // called when logout error
   const onError = err => {
@@ -107,6 +111,13 @@ const HeaderMain = ({ titleOnly }) => {
 
   return (
     <Row>
+      <Col span={12}>
+        <CartModal
+          showModal={showModal}
+          carts={cartInfo}
+          onCancel={() => setShowModal(false)}
+        />
+      </Col>
       <Col offset={1} span={22}>
         <div className={styles.container}>
           <Title level={3} style={titleStyle}>
@@ -130,6 +141,7 @@ const HeaderMain = ({ titleOnly }) => {
             )}
 
             <Badge
+              onClick={showCart}
               className={styles.cart}
               style={{ backgroundColor: '#fff' }}
               count={cartProductCount}

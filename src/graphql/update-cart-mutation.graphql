@@ -1,0 +1,12 @@
+mutation UpdateCart($quantity: Int!, $item_id: Int!) {
+  cart: updateCart(quantity: $quantity, item_id: $item_id) {
+    item_id
+    name
+    attributes
+    image
+    price
+    quantity
+    subtotal
+    product_id
+  }
+}

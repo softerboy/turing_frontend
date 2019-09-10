@@ -1,12 +1,18 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useContext } from 'react'
 import { Col, Icon, List, Row, Typography } from 'antd'
+import debounce from 'lodash.debounce'
 
+import { useApolloClient, useMutation } from '@apollo/react-hooks'
+import { useTranslation } from 'react-i18next'
 import { propTypeCart } from './prop-types'
 import { PRODUCT_IMG_ROOT } from '../../common/constants'
 import { AppContext } from '../context/AppContext'
 import Counter from '../Counter'
 import styles from './CartListItem.module.less'
+import UPDATE_CART_MUTATION from '../../graphql/update-cart-mutation.graphql'
+import TOTAL_AMOUNT_QUERY from '../../graphql/total-amount-query.graphql'
+import { getCartId } from '../../common/utils'
 
 const { Item } = List
 const { Text } = Typography
@@ -23,6 +29,37 @@ const grid = {
 const CartListItem = ({ cart }) => {
   const { name, image, attributes, subtotal, quantity, item_id } = cart
   const { currency } = useContext(AppContext)
+  const { t } = useTranslation()
+  const client = useApolloClient()
+  const [updateCart] = useMutation(UPDATE_CART_MUTATION)
+
+  const handleCartCountChange = debounce(async (count, itemId) => {
+    // prettier-ignore
+    try {
+      const { data: { cart: cartInfo } } = await updateCart({
+        variables: { quantity: count, item_id: itemId },
+      })
+
+      // update cart data
+      client.writeData({ data: { cartInfo } })
+
+      // update total amount
+      const cart_id = await getCartId(client)
+      const { data } = await client.query({
+        query: TOTAL_AMOUNT_QUERY,
+        variables: { cart_id },
+        fetchPolicy: 'network-only',
+      })
+
+      if (data && data.totalAmount) {
+        client.writeData({ data: { cartTotalAmount: data.totalAmount } })
+      }
+    } catch(err) {
+      // TODO: handle error
+      // eslint-disable-next-line no-console
+      console.warn(err)
+    }
+  }, 500)
 
   return (
     <Item>
@@ -49,6 +86,7 @@ const CartListItem = ({ cart }) => {
             inputKey={item_id}
             defaultValue={quantity}
             min={1}
+            onChange={count => handleCartCountChange(count, item_id)}
           />
         </Col>
 
@@ -62,7 +100,7 @@ const CartListItem = ({ cart }) => {
         <Col span={24} style={{ textAlign: 'right' }}>
           <span style={{ cursor: 'pointer' }}>
             <Icon className={styles.closeIcon} type="close" />
-            <Text>Remove</Text>
+            <Text>{t('Remove')}</Text>
           </span>
         </Col>
       </Row>

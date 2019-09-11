@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useContext } from 'react'
-import { Col, Icon, List, Row, Typography } from 'antd'
+import { Col, Icon, List, Popconfirm, Row, Typography } from 'antd'
 import debounce from 'lodash.debounce'
 
 import { useApolloClient, useMutation } from '@apollo/react-hooks'
@@ -12,6 +12,7 @@ import Counter from '../Counter'
 import styles from './CartListItem.module.less'
 import UPDATE_CART_MUTATION from '../../graphql/update-cart-mutation.graphql'
 import TOTAL_AMOUNT_QUERY from '../../graphql/total-amount-query.graphql'
+import REMOVE_CART_ITEM_MUTATION from '../../graphql/remove-cart-item-mutation.graphql'
 import { getCartId } from '../../common/utils'
 
 const { Item } = List
@@ -25,6 +26,20 @@ const grid = {
   subtotal: { xs: { span: 16 }, md: { span: 3 } },
 }
 
+async function updateTotalAmount(client) {
+  // eslint-disable-next-line camelcase
+  const cart_id = await getCartId(client)
+  const { data } = await client.query({
+    query: TOTAL_AMOUNT_QUERY,
+    variables: { cart_id },
+    fetchPolicy: 'network-only',
+  })
+
+  if (data && data.totalAmount) {
+    client.writeData({ data: { cartTotalAmount: data.totalAmount } })
+  }
+}
+
 /* eslint-disable camelcase */
 const CartListItem = ({ cart }) => {
   const { name, image, attributes, subtotal, quantity, item_id } = cart
@@ -32,6 +47,7 @@ const CartListItem = ({ cart }) => {
   const { t } = useTranslation()
   const client = useApolloClient()
   const [updateCart] = useMutation(UPDATE_CART_MUTATION)
+  const [removeCartItem] = useMutation(REMOVE_CART_ITEM_MUTATION)
 
   const handleCartCountChange = debounce(async (count, itemId) => {
     // prettier-ignore
@@ -42,24 +58,29 @@ const CartListItem = ({ cart }) => {
 
       // update cart data
       client.writeData({ data: { cartInfo } })
-
-      // update total amount
-      const cart_id = await getCartId(client)
-      const { data } = await client.query({
-        query: TOTAL_AMOUNT_QUERY,
-        variables: { cart_id },
-        fetchPolicy: 'network-only',
-      })
-
-      if (data && data.totalAmount) {
-        client.writeData({ data: { cartTotalAmount: data.totalAmount } })
-      }
+      await updateTotalAmount(client)
     } catch(err) {
       // TODO: handle error
       // eslint-disable-next-line no-console
       console.warn(err)
     }
   }, 500)
+
+  const onRemovalConfirmed = async itemId => {
+    try {
+      // prettier-ignore
+      const { data: { cart: cartInfo } } = await removeCartItem({
+        variables: { item_id: itemId }
+      })
+
+      client.writeData({ data: { cartInfo } })
+      await updateTotalAmount(client)
+    } catch (err) {
+      // TODO: handle error
+      // eslint-disable-next-line no-console
+      console.error(err)
+    }
+  }
 
   return (
     <Item>
@@ -98,10 +119,18 @@ const CartListItem = ({ cart }) => {
         </Col>
 
         <Col span={24} style={{ textAlign: 'right' }}>
-          <span style={{ cursor: 'pointer' }}>
-            <Icon className={styles.closeIcon} type="close" />
-            <Text>{t('Remove')}</Text>
-          </span>
+          <Popconfirm
+            title={t('Are you sure delete this item?')}
+            onConfirm={() => onRemovalConfirmed(item_id)}
+            okText={t('Yes')}
+            cancelText={t('No')}
+            overlayStyle={{ zIndex: 999999999999 }}
+          >
+            <span style={{ cursor: 'pointer' }}>
+              <Icon className={styles.closeIcon} type="close" />
+              <Text>{t('Remove')}</Text>
+            </span>
+          </Popconfirm>
         </Col>
       </Row>
     </Item>

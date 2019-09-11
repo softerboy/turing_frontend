@@ -1,0 +1,12 @@
+mutation RemoveCartItemMutation($item_id: Int!) {
+  cart: removeItem(item_id: $item_id) {
+    item_id
+    name
+    attributes
+    image
+    price
+    quantity
+    subtotal
+    product_id
+  }
+}

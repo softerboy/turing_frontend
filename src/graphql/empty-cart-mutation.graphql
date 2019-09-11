@@ -1,0 +1,7 @@
+mutation EmptyCart($cart_id: String!) {
+  cart: emptyCart(cart_id: $cart_id) {
+    # anyway will return empty array
+    # no need for another fields
+    product_id
+  }
+}

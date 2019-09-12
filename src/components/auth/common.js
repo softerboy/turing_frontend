@@ -1,11 +1,13 @@
 import { Button, Checkbox, Input } from 'antd'
 import React from 'react'
 
+const size = 'large'
+
 // eslint-disable-next-line
 export const SubmitButton = ({ loading, children }) => (
   <Button
     style={{ padding: '0 46px' }}
-    size="large"
+    size={size}
     shape="round"
     type="primary"
     htmlType="submit"
@@ -28,7 +30,7 @@ export const getUsernameField = (fieldDecorator, t) => {
         message: t('Username length must be at least 3 character'),
       },
     ],
-  })(<Input size="large" />)
+  })(<Input size={size} />)
 }
 
 export const getEmailField = (fieldDecorator, t) => {
@@ -44,7 +46,7 @@ export const getEmailField = (fieldDecorator, t) => {
         message: 'Invalid email address',
       },
     ],
-  })(<Input size="large" />)
+  })(<Input size={size} />)
 }
 
 const loginFormPasswordRules = t => [
@@ -92,11 +94,33 @@ export const getPasswordField = (register = false) => (fieldDecorator, t) => {
     rules: register
       ? loginFormPasswordRules(t).concat(registerFormPasswordRules(t))
       : loginFormPasswordRules(t),
-  })(<Input.Password size="large" />)
+  })(<Input.Password size={size} />)
 }
 
 export const getRememberField = (fieldDecorator, t) => {
   return fieldDecorator('remember', { initialValue: false })(
-    <Checkbox size="large">{t('Remember')}</Checkbox>,
+    <Checkbox size={size}>{t('Remember')}</Checkbox>,
   )
+}
+
+export const getFullNameField = (fieldDecorator, t) => {
+  return fieldDecorator('fullname', {
+    rules: [
+      {
+        required: true,
+        message: t('Please input your full name'),
+      },
+    ],
+  })(<Input size={size} />)
+}
+
+export const getAddressField = (fieldDecorator, t) => {
+  return fieldDecorator('address', {
+    rules: [
+      {
+        required: true,
+        message: t('Please input your street address'),
+      },
+    ],
+  })(<Input size={size} />)
 }

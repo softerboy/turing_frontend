@@ -13,6 +13,7 @@ import resolvers from './resolvers'
 import Boot from './components/Boot'
 import { USER_KEY } from './common/constants'
 import Product from './pages/Product'
+import Checkout from './pages/Checkout'
 
 const cache = new InMemoryCache()
 cache.writeData({ data })
@@ -54,11 +55,7 @@ const App = () => (
             <Route exact name="register" path="/register">
               <Auth key="register" register />
             </Route>
-            <PrivateRoute
-              exact
-              path="/secret"
-              component={() => <h1>Secret</h1>}
-            />
+            <PrivateRoute exact path="/checkout" component={Checkout} />
             <Route exact path="/product/:product_id" component={Product} />
           </Switch>
         </BrowserRouter>

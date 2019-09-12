@@ -1,0 +1,12 @@
+query ShippingRegion {
+  shippingRegions {
+    shipping_region
+    shipping_region_id
+    shippingTypes {
+      shipping_id
+      shipping_cost
+      shipping_type
+      shipping_region_id
+    }
+  }
+}

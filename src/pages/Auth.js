@@ -1,5 +1,5 @@
-import React, { useRef } from 'react'
-import { withRouter } from 'react-router-dom'
+import React, { useContext, useRef } from 'react'
+import { Redirect, withRouter } from 'react-router-dom'
 import * as PropTypes from 'prop-types'
 import { useMutation } from '@apollo/react-hooks'
 
@@ -10,6 +10,7 @@ import Wrapper from '../components/auth/Wrapper'
 import CUSTOMER_REGISTER_MUTATION from '../graphql/customer-register-mutation.graphql'
 import CUSTOMER_LOGIN_MUTATION from '../graphql/customer-login-mutation.graphql'
 import { USER_KEY } from '../common/constants'
+import { AppContext } from '../components/context/AppContext'
 
 /* eslint-disable react/prop-types */
 // this export used for testing purpose
@@ -17,6 +18,10 @@ import { USER_KEY } from '../common/constants'
 export const Auth = ({ register, history }) => {
   // used for setting response error message in form
   const formRef = useRef(null)
+
+  // redirect to the page, where came from
+  const defaultRedirect = { from: { pathname: '/' } }
+  const { from } = history.location.state || defaultRedirect
 
   const update = (cache, { data }) => {
     // depending on login type, extract response by field name
@@ -28,11 +33,7 @@ export const Auth = ({ register, history }) => {
 
     // save token to localStorage
     localStorage.setItem(USER_KEY, auth.accessToken)
-
-    // redirect to the page, where came from
-    const defaultRedirect = { from: { pathname: '/' } }
-    const { from } = history.location.state || defaultRedirect
-    history.replace(from)
+    setImmediate(() => history.replace(from))
   }
 
   const onError = err => {
@@ -51,6 +52,10 @@ export const Auth = ({ register, history }) => {
     onError,
     update,
   })
+
+  const { isLoggedIn } = useContext(AppContext)
+  // redirect to the page, where came from
+  if (isLoggedIn) return <Redirect to={from} />
 
   return (
     <Wrapper>

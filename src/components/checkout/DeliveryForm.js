@@ -104,7 +104,7 @@ const DeliveryForm = props => {
       <Row gutter={16}>
         <Col span={12}>
           <FormItem label={t('Region')}>
-            {getFieldDecorator('shipping_region', {
+            {getFieldDecorator('shipping_region_id', {
               rules: [
                 {
                   required: true,
@@ -130,7 +130,7 @@ const DeliveryForm = props => {
         </Col>
         <Col span={12}>
           <FormItem label={t('Type')}>
-            {getFieldDecorator('shipping_type', {
+            {getFieldDecorator('shipping_id', {
               rules: [
                 {
                   required: true,

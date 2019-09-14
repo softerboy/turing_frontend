@@ -1,0 +1,15 @@
+query OrderSummary(
+  $cart_id: String!
+  $shipping_region_id: Int!
+  $shipping_id: Int!
+) {
+  orderFee(
+    cart_id: $cart_id
+    shipping_region_id: $shipping_region_id
+    shipping_id: $shipping_id
+  ) {
+    type
+    title
+    value
+  }
+}

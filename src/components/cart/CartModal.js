@@ -3,6 +3,7 @@ import { Button, Modal, Popconfirm } from 'antd'
 import * as PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 import { useApolloClient, useMutation } from '@apollo/react-hooks'
+import { withRouter } from 'react-router-dom'
 
 import CartList from './CartList'
 import { propTypeCarts } from './prop-types'
@@ -53,7 +54,8 @@ CartModalFooter.defaultProps = {
   onButtonClick: () => {},
 }
 
-const CartModal = ({ showModal, onCancel, carts }) => {
+// eslint-disable-next-line react/prop-types
+const CartModal = ({ showModal, onCancel, carts, history }) => {
   const { cartTotalAmount } = useContext(AppContext)
   const [emptyCart] = useMutation(EMPTY_CART_MUTATION)
   const client = useApolloClient()
@@ -74,7 +76,12 @@ const CartModal = ({ showModal, onCancel, carts }) => {
         console.warn(err)
       }
     } else if (action === CHECKOUT) {
-      // TODO: handle checkout
+      // eslint-disable-next-line react/prop-types
+      history.push({
+        pathname: '/checkout',
+        // eslint-disable-next-line react/prop-types
+        state: { from: history.location },
+      })
     }
   }
 
@@ -92,7 +99,7 @@ const CartModal = ({ showModal, onCancel, carts }) => {
   )
 }
 
-export default CartModal
+export default withRouter(CartModal)
 
 CartModal.propTypes = {
   carts: propTypeCarts,

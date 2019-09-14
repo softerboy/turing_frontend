@@ -2,6 +2,10 @@ query ShippingRegion {
   shippingRegions {
     shipping_region
     shipping_region_id
+    tax {
+      tax_id
+      tax_percentage
+    }
     shippingTypes {
       shipping_id
       shipping_cost

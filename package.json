@@ -19,7 +19,8 @@
     "react-i18next": "^10.11.4",
     "react-image-magnify": "^2.7.4",
     "react-router-dom": "^5.0.1",
-    "react-scripts": "3.1.0"
+    "react-scripts": "3.1.0",
+    "react-stripe-elements": "^5.0.0"
   },
   "scripts": {
     "lint": "eslint .",

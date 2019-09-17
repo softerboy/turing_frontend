@@ -13,6 +13,7 @@ import OrderSummary from './OrderSummary'
 
 import SHIPPING_REGIONS_QUERY from '../../graphql/shipping-regions-query.graphql'
 import ORDER_FEE_QUERY from '../../graphql/order-fee-query.graphql'
+import CHECKOUT_MUTATION from '../../graphql/checkout-mutation.graphql'
 import { getCartId } from '../../common/utils'
 
 const { TabPane: Tab } = Tabs
@@ -32,13 +33,15 @@ const TabTitle = ({ text, icon }) => (
 const CheckoutTabs = () => {
   const { t } = useTranslation()
   const client = useApolloClient()
-  const { currency } = useContext(AppContext)
+  const { currency, auth } = useContext(AppContext)
   const { data } = useQuery(SHIPPING_REGIONS_QUERY)
-  // const [deliveryForm, setDeliveryForm] = useState({})
+  const [deliveryForm, setDeliveryForm] = useState(null)
   const [activeTab, setActiveTab] = useState(tabs.DELIVERY)
   const [stripe, setStripe] = useState(null)
   const [orderSummary, setOrderSummary] = useState(null)
   const [amount, setAmount] = useState(0.0)
+  const [paymentError, setPaymentError] = useState(null)
+  const [loading, setLoading] = useState(false)
 
   // Initialize stripe to null, then update it in
   // useEffect when the script tag has loaded.
@@ -56,7 +59,7 @@ const CheckoutTabs = () => {
   }, [stripe])
 
   async function onDeliveryFormSubmit(form) {
-    // setDeliveryForm(form)
+    setDeliveryForm(form)
     try {
       const { shipping_region_id, shipping_id } = form
       const cart_id = await getCartId(client)
@@ -87,6 +90,38 @@ const CheckoutTabs = () => {
     setActiveTab(tab)
   }
 
+  async function checkout(stripeEl) {
+    const cart_id = await getCartId(client)
+
+    try {
+      setLoading(true)
+      // prettier-ignore
+      const { data: { client_secret } } = await client.mutate({
+        mutation: CHECKOUT_MUTATION,
+        variables: { ...deliveryForm, cart_id },
+      })
+
+      // begin charging
+      const { paymentIntent, error } = await stripeEl.handleCardPayment(
+        client_secret,
+        {
+          receipt_email: auth.email,
+        },
+      )
+
+      if (error) {
+        setPaymentError(error.message)
+      } else {
+        console.log(paymentIntent)
+      }
+    } catch (err) {
+      // TODO: handle checkout error
+      console.error(err)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <StripeProvider stripe={stripe}>
       <Card>
@@ -110,7 +145,14 @@ const CheckoutTabs = () => {
               orderSummary={orderSummary || []}
             />
             <Elements>
-              <CardForm currency={currency} amount={amount} />
+              <CardForm
+                error={paymentError}
+                currency={currency}
+                amount={amount}
+                onPayClick={checkout}
+                onChange={() => setPaymentError(null)}
+                loading={loading}
+              />
             </Elements>
           </Tab>
         </Tabs>

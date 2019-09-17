@@ -1,0 +1,23 @@
+mutation Chekout(
+  $cart_id: String!
+  $fullname: String!
+  $address: String!
+  $city: String!
+  $state: String!
+  $country: String!
+  $zip: String!
+  $shipping_region_id: Int!
+  $shipping_id: Int!
+) {
+  client_secret: checkout(
+    cart_id: $cart_id
+    fullname: $fullname
+    address: $address
+    city: $city
+    state: $state
+    country: $country
+    zip: $zip
+    shipping_region_id: $shipping_region_id
+    shipping_id: $shipping_id
+  )
+}

@@ -21,21 +21,26 @@ const CHECKOUT = 'ACTION_CHECKOUT'
 const EMPTY_CART = 'ACTION_EMPTY_CART'
 
 /* eslint-disable react/jsx-props-no-spreading */
-const CartModalFooter = ({ onButtonClick }) => {
+const CartModalFooter = ({ onButtonClick, disabled }) => {
   const { t } = useTranslation()
   return (
     <div className="cartModalFooter" style={{ padding: '15px 25px' }}>
       <Popconfirm
+        className="popupoverEmptyCart"
+        disabled={disabled}
         overlayStyle={{ zIndex: 999999999999 }}
         title={t('Are you sure you want to clear all items?')}
         okText={t('Yes')}
         cancelText={t('No')}
         onConfirm={e => onButtonClick(e, EMPTY_CART)}
       >
-        <Button {...btnProps}>{t('Empty cart')}</Button>
+        <Button {...btnProps} disabled={disabled}>
+          {t('Empty cart')}
+        </Button>
       </Popconfirm>
       <Button
         {...btnProps}
+        disabled={disabled}
         type="primary"
         onClick={e => onButtonClick(e, CHECKOUT)}
       >
@@ -47,15 +52,17 @@ const CartModalFooter = ({ onButtonClick }) => {
 
 CartModalFooter.propTypes = {
   onButtonClick: PropTypes.func,
+  disabled: PropTypes.bool,
 }
 
 CartModalFooter.defaultProps = {
   onButtonClick: () => {},
+  disabled: false,
 }
 
 // eslint-disable-next-line react/prop-types
 const CartModal = ({ showModal, onCancel, carts, history }) => {
-  const { cartTotalAmount } = useContext(AppContext)
+  const { cartTotalAmount, cartInfo } = useContext(AppContext)
   const [emptyCart] = useMutation(EMPTY_CART_MUTATION)
   const client = useApolloClient()
 
@@ -72,13 +79,20 @@ const CartModal = ({ showModal, onCancel, carts, history }) => {
     }
   }
 
+  const disabled = !cartInfo || !cartInfo.length
+
   return (
     <Modal
       style={{ top: 30 }}
       width={767}
       visible={showModal}
       onCancel={onCancel}
-      footer={<CartModalFooter onButtonClick={handleFooterActions} />}
+      footer={
+        <CartModalFooter
+          disabled={disabled}
+          onButtonClick={handleFooterActions}
+        />
+      }
       destroyOnClose
     >
       <CartList carts={carts} totalAmount={cartTotalAmount} />

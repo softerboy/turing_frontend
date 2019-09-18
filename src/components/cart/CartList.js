@@ -7,6 +7,7 @@ import CartListItem from './CartListItem'
 import { propTypeCarts } from './prop-types'
 import styles from './CartList.module.less'
 import { AppContext } from '../context/AppContext'
+import EmptyCartPlaceholder from './EmptyCartPlaceholder'
 
 const { Text, Title } = Typography
 
@@ -74,6 +75,7 @@ const CartList = props => {
         renderItem={renderCartItem}
         pagination={{ pageSize: 3 }}
         split={false}
+        locale={{ emptyText: <EmptyCartPlaceholder /> }}
       />
     </>
   )

@@ -16,11 +16,18 @@
 		min-width: 170px;
 	}
 
-	button:first-child {
+	.popupoverEmptyCart {
 		float: left;
+	}
 
+	button:first-child {
 		border: 1px solid @primary-color;
 		color: @primary-color;
+	}
+
+	button:first-child:disabled {
+		border: 1px solid @btn-disable-border;
+		color: @btn-disable-color;
 	}
 }
 

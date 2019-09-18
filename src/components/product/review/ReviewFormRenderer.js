@@ -43,7 +43,11 @@ const ReviewFormRenderer = props => {
 
   if (isLoggedIn)
     return (
-      <ProductReviewForm ref={reviewFormRef} onSubmit={onReviewFormSubmit} />
+      <ProductReviewForm
+        loading={loading}
+        ref={reviewFormRef}
+        onSubmit={onReviewFormSubmit}
+      />
     )
 
   return (
@@ -57,7 +61,6 @@ const ReviewFormRenderer = props => {
           }}
         >
           <Button
-            loading={loading}
             size="large"
             shape="round"
             type="default"

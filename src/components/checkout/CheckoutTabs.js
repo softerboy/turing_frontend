@@ -1,9 +1,10 @@
 /* eslint-disable react/prop-types, camelcase */
 import React, { useContext, useEffect, useState } from 'react'
 import { Icon, Tabs, Card } from 'antd'
-import { useApolloClient, useQuery } from '@apollo/react-hooks'
+import { useApolloClient, useMutation, useQuery } from '@apollo/react-hooks'
 import { useTranslation } from 'react-i18next'
 import { Elements, StripeProvider } from 'react-stripe-elements'
+import { withRouter } from 'react-router-dom'
 
 import DeliveryForm from './DeliveryForm'
 import './CheckoutTabs.less'
@@ -14,7 +15,8 @@ import OrderSummary from './OrderSummary'
 import SHIPPING_REGIONS_QUERY from '../../graphql/shipping-regions-query.graphql'
 import ORDER_FEE_QUERY from '../../graphql/order-fee-query.graphql'
 import CHECKOUT_MUTATION from '../../graphql/checkout-mutation.graphql'
-import { getCartId } from '../../common/utils'
+import EMPTY_CART_MUTATION from '../../graphql/empty-cart-mutation.graphql'
+import { getCartId, removeCartData } from '../../common/utils'
 
 const { TabPane: Tab } = Tabs
 
@@ -30,7 +32,7 @@ const TabTitle = ({ text, icon }) => (
   </span>
 )
 
-const CheckoutTabs = () => {
+const CheckoutTabs = ({ history }) => {
   const { t } = useTranslation()
   const client = useApolloClient()
   const { currency, auth } = useContext(AppContext)
@@ -42,20 +44,25 @@ const CheckoutTabs = () => {
   const [amount, setAmount] = useState(0.0)
   const [paymentError, setPaymentError] = useState(null)
   const [loading, setLoading] = useState(false)
+  const [emptyCart] = useMutation(EMPTY_CART_MUTATION)
+
+  function setupStripe() {
+    setStripe(window.Stripe(process.env.REACT_APP_STRIPE_PUB_KEY))
+  }
 
   // Initialize stripe to null, then update it in
   // useEffect when the script tag has loaded.
   useEffect(() => {
+    const stripeElement = document.querySelector('#stripe-js')
     if (!stripe) {
       if (window.Stripe) {
-        setStripe(window.Stripe(process.env.REACT_APP_STRIPE_PUB_KEY))
+        setupStripe()
       } else {
-        document.querySelector('#stripe-js').addEventListener('load', () => {
-          // Create Stripe instance once Stripe.js loads
-          setStripe(window.Stripe(process.env.REACT_APP_STRIPE_PUB_KEY))
-        })
+        stripeElement.addEventListener('load', setupStripe)
       }
     }
+
+    return () => stripeElement.removeEventListener('load', setupStripe)
   }, [stripe])
 
   async function onDeliveryFormSubmit(form) {
@@ -102,20 +109,31 @@ const CheckoutTabs = () => {
       })
 
       // begin charging
-      const { paymentIntent, error } = await stripeEl.handleCardPayment(
-        client_secret,
-        {
-          receipt_email: auth.email,
-        },
-      )
+      const { error } = await stripeEl.handleCardPayment(client_secret, {
+        receipt_email: auth.email,
+      })
 
       if (error) {
         setPaymentError(error.message)
-      } else {
-        console.log(paymentIntent)
+        return
+      }
+      // remove cart data from cache and backend
+      try {
+        await removeCartData(client, emptyCart)
+      } catch (err) {
+        // eslint-disable-next-line no-console
+        console.error(err.message)
+      } finally {
+        setImmediate(() => {
+          history.replace({
+            pathname: '/thankyou',
+            state: { isFromCheckoutPage: true },
+          })
+        })
       }
     } catch (err) {
       // TODO: handle checkout error
+      // eslint-disable-next-line no-console
       console.error(err)
     } finally {
       setLoading(false)
@@ -161,4 +179,4 @@ const CheckoutTabs = () => {
   )
 }
 
-export default CheckoutTabs
+export default withRouter(CheckoutTabs)

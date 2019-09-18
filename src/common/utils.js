@@ -110,3 +110,12 @@ export const getCartId = async client => {
   window.localStorage.setItem(CART_ID_KEY, cart_id)
   return cart_id
 }
+
+export const removeCartData = async (client, mutate) => {
+  // eslint-disable-next-line camelcase
+  const cart_id = localStorage.getItem(CART_ID_KEY)
+  localStorage.removeItem(CART_ID_KEY)
+  // prettier-ignore
+  const { data: { cart: cartInfo } } = await mutate({ variables: { cart_id } })
+  client.writeData({ data: { cartInfo, cartTotalAmount: 0.0 } })
+}

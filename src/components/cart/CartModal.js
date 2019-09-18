@@ -10,8 +10,7 @@ import { propTypeCarts } from './prop-types'
 import './CartModal.less'
 import { AppContext } from '../context/AppContext'
 import EMPTY_CART_MUTATION from '../../graphql/empty-cart-mutation.graphql'
-import { getCartId } from '../../common/utils'
-import { CART_ID_KEY } from '../../common/constants'
+import { removeCartData } from '../../common/utils'
 
 const btnProps = {
   shape: 'round',
@@ -62,19 +61,7 @@ const CartModal = ({ showModal, onCancel, carts, history }) => {
 
   const handleFooterActions = async (e, action) => {
     if (action === EMPTY_CART) {
-      try {
-        // eslint-disable-next-line camelcase
-        const cart_id = await getCartId(client)
-        // prettier-ignore
-        const { data: { cart: cartInfo } } = await emptyCart({ variables: { cart_id } })
-
-        client.writeData({ data: { cartInfo, cartTotalAmount: 0.0 } })
-        localStorage.removeItem(CART_ID_KEY)
-      } catch (err) {
-        // TODO: handle error
-        // eslint-disable-next-line no-console
-        console.warn(err)
-      }
+      await removeCartData(client, emptyCart)
     } else if (action === CHECKOUT) {
       // eslint-disable-next-line react/prop-types
       history.push({

@@ -15,6 +15,7 @@ import { USER_KEY } from './common/constants'
 import Product from './pages/Product'
 import Checkout from './pages/Checkout'
 import ThankYou from './pages/ThankYou'
+import NotFound from './pages/NotFound'
 
 const cache = new InMemoryCache()
 cache.writeData({ data })
@@ -59,6 +60,7 @@ const App = () => (
             <PrivateRoute exact path="/checkout" component={Checkout} />
             <Route exact path="/product/:product_id" component={Product} />
             <Route exact path="/thankyou" component={ThankYou} />
+            <Route path={['/404', '*']} component={NotFound} />
           </Switch>
         </BrowserRouter>
       </AppProvider>

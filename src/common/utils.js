@@ -28,6 +28,22 @@ const toNumberArray = param => {
   return []
 }
 
+export function searchTermFromQueryString(queryString) {
+  const { search } = qs.parse(queryString, { arrayFormat })
+
+  if (typeof search === 'string') return search
+  return null
+}
+
+export function searchTermToQueryString(search, currentQueryString) {
+  const result = qs.parse(currentQueryString, { arrayFormat })
+
+  if (search) result.search = search
+  else delete result.search
+
+  return qs.stringify(result, { arrayFormat })
+}
+
 export const filterPropsFromQueryString = queryString => {
   if (!queryString) return {}
 

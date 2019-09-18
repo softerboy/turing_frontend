@@ -9,6 +9,7 @@ import ProductGridRenderer from '../components/product/ProductGridRenderer'
 import {
   filterPropsFromQueryString,
   paginationPropsFromQueryString,
+  searchTermFromQueryString,
 } from '../common/utils'
 
 const colWidth = {
@@ -23,19 +24,21 @@ const Home = ({ history }) => {
   const [variables, setVariables] = useState({ page: 1, perPage: 10 })
 
   useEffect(() => {
-    const { search } = history.location
+    const { search: queryString } = history.location
     const {
       defaultCategoryIds: inCategory,
       defaultColorIds: inColor,
       defaultSizeIds: inSize,
       defaultPrice: inPrice,
-    } = filterPropsFromQueryString(search)
+    } = filterPropsFromQueryString(queryString)
 
     const {
       page,
       per_page: perPage,
       sort: sortBy,
-    } = paginationPropsFromQueryString(search)
+    } = paginationPropsFromQueryString(queryString)
+
+    const search = searchTermFromQueryString(queryString)
 
     const newVariables = {
       inCategory,
@@ -45,6 +48,7 @@ const Home = ({ history }) => {
       page,
       perPage,
       sortBy,
+      search,
     }
 
     setVariables(newVariables)
@@ -64,6 +68,7 @@ const Home = ({ history }) => {
 
         <Col {...colWidth.products}>
           <ProductGridRenderer
+            history={history}
             onTotalChanged={setTotal}
             variables={variables}
           />

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import * as PropTypes from 'prop-types'
 import {
   Typography,
@@ -13,8 +13,9 @@ import {
   notification,
 } from 'antd'
 import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import { useMutation } from '@apollo/react-hooks'
+import debounce from 'lodash.debounce'
 
 import vars from '../../theme/variables'
 import styles from './HeaderMain.module.less'
@@ -24,6 +25,10 @@ import localState from '../../local-state'
 import CUSTOMER_LOGOUT from '../../graphql/customer-logout-mutation.graphql'
 import { USER_KEY } from '../../common/constants'
 import CartModal from '../cart/CartModal'
+import {
+  searchTermFromQueryString,
+  searchTermToQueryString,
+} from '../../common/utils'
 
 const { Title } = Typography
 const { Item } = Menu
@@ -39,10 +44,18 @@ const titleStyle = {
 
 const SearchIcon = <Icon type="search" />
 
-const HeaderMain = ({ titleOnly }) => {
+/* eslint-disable react/prop-types */
+const HeaderMain = ({ titleOnly, history }) => {
   const { t } = useTranslation()
   const [showModal, setShowModal] = useState(false)
+  const [search, setSearch] = useState(null)
   const { isLoggedIn, auth, cartInfo } = useContext(AppContext)
+
+  useEffect(() => {
+    const value = searchTermFromQueryString(history.location.search)
+    if (value !== search) setSearch(value)
+    // eslint-disable-next-line react/prop-types
+  }, [history.location.search])
 
   const cartProductCount = cartInfo.reduce(
     (total, { quantity }) => total + quantity,
@@ -86,6 +99,24 @@ const HeaderMain = ({ titleOnly }) => {
     if (key === 'LOGOUT') logout()
   }
 
+  function applySearch(term) {
+    const queryString = searchTermToQueryString(term, history.location.search)
+    history.push(`/products?${queryString}`)
+  }
+
+  const applySearchDebounce = debounce(applySearch, 500)
+
+  function onSearchChange(e) {
+    const { value } = e.target
+    setSearch(value)
+    if (!value) applySearchDebounce(value)
+  }
+
+  function onSearchSubmit(e) {
+    e.preventDefault()
+    applySearch(search)
+  }
+
   // eslint-disable-next-line
   const menu = ({ email }) => (
     <Menu onClick={onMenuClick}>
@@ -110,58 +141,69 @@ const HeaderMain = ({ titleOnly }) => {
   }
 
   return (
-    <Row>
-      <Col span={12}>
-        <CartModal
-          showModal={showModal}
-          carts={cartInfo}
-          onCancel={() => setShowModal(false)}
-        />
-      </Col>
-      <Col offset={1} span={22}>
-        <div className={styles.container}>
-          <Title level={3} style={titleStyle}>
-            <Link to="/">{process.env.REACT_APP_NAME}</Link>
-          </Title>
+    <form onSubmit={onSearchSubmit}>
+      <Row>
+        <Col span={12}>
+          <CartModal
+            showModal={showModal}
+            carts={cartInfo}
+            onCancel={() => setShowModal(false)}
+          />
+        </Col>
+        <Col offset={1} span={22}>
+          <div className={styles.container}>
+            <Title level={3} style={titleStyle}>
+              <Link to="/">{process.env.REACT_APP_NAME}</Link>
+            </Title>
 
-          <div style={{ float: 'right' }}>
-            <Input
-              className={styles.search}
-              prefix={SearchIcon}
-              placeholder={t('search anything')}
-              allowClear
-            />
+            <div style={{ float: 'right' }}>
+              <Input
+                onChange={onSearchChange}
+                className={styles.search}
+                prefix={SearchIcon}
+                placeholder={t('search anything')}
+                allowClear
+                value={search}
+              />
 
-            {isLoggedIn && (
-              <Dropdown overlay={menu(auth)}>
-                <Button className={styles.user} type="link">
-                  <Icon type="user" />
-                </Button>
-              </Dropdown>
-            )}
+              {isLoggedIn && (
+                <Dropdown
+                  overlay={menu(auth)}
+                  overlayStyle={{ zIndex: 99999999999999 }}
+                >
+                  <Button className={styles.user} type="link">
+                    <Icon type="user" />
+                  </Button>
+                </Dropdown>
+              )}
 
-            <Badge
-              onClick={showCart}
-              className={styles.cart}
-              style={{ backgroundColor: '#fff' }}
-              count={cartProductCount}
-              showZero
-            >
-              <Icon type="shopping-cart" />
-            </Badge>
+              <Badge
+                onClick={showCart}
+                className={styles.cart}
+                style={{ backgroundColor: '#fff' }}
+                count={cartProductCount}
+                showZero
+              >
+                <Icon type="shopping-cart" />
+              </Badge>
+            </div>
           </div>
-        </div>
-      </Col>
+        </Col>
 
-      <Col>
-        <Input
-          className={styles.searchXs}
-          prefix={SearchIcon}
-          placeholder={t('search anything')}
-          allowClear
-        />
-      </Col>
-    </Row>
+        <Col>
+          <Input
+            onChange={onSearchChange}
+            className={styles.searchXs}
+            prefix={SearchIcon}
+            placeholder={t('search anything')}
+            allowClear
+            value={search}
+          />
+        </Col>
+      </Row>
+
+      <input type="submit" style={{ display: 'none' }} />
+    </form>
   )
 }
 
@@ -175,4 +217,4 @@ HeaderMain.defaultProps = {
   titleOnly: false,
 }
 
-export default HeaderMain
+export default withRouter(HeaderMain)

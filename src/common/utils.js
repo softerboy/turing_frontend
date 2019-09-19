@@ -38,8 +38,14 @@ export function searchTermFromQueryString(queryString) {
 export function searchTermToQueryString(search, currentQueryString) {
   const result = qs.parse(currentQueryString, { arrayFormat })
 
-  if (search) result.search = search
-  else delete result.search
+  if (search) {
+    result.search = search
+    // when applying new search always
+    // begin from first page
+    result.page = 1
+  } else {
+    delete result.search
+  }
 
   return qs.stringify(result, { arrayFormat })
 }

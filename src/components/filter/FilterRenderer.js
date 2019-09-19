@@ -11,6 +11,7 @@ import {
   filterPropsFromQueryString,
 } from '../../common/utils'
 import FilterPlaceholder from './FilterPlaceholder'
+import ErrorRenderer from '../ErrorRenderer'
 
 const FilterRenderer = ({ history }) => {
   const { data, error, loading } = useQuery(FILTER_QUERY)
@@ -29,8 +30,7 @@ const FilterRenderer = ({ history }) => {
     )
   }
 
-  // TODO: replace with error placeholder component
-  if (error) return <div>Ups :-( {JSON.stringify(error)}</div>
+  if (error) return <ErrorRenderer error={error} />
 
   const categories = data.departments.reduce((acc, curr) => {
     return acc.concat([curr.name]).concat(curr.categories)

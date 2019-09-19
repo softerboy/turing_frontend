@@ -27,7 +27,6 @@ const Boot = ({ children }) => {
 
   if (error) return children
 
-  // TODO: replace with full page loader
   if (loading) return null
 
   const { me } = data

@@ -1,6 +1,14 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useContext } from 'react'
-import { Col, Icon, List, Popconfirm, Row, Typography } from 'antd'
+import {
+  Col,
+  Icon,
+  List,
+  notification,
+  Popconfirm,
+  Row,
+  Typography,
+} from 'antd'
 import debounce from 'lodash.debounce'
 
 import { useApolloClient, useMutation } from '@apollo/react-hooks'
@@ -60,9 +68,14 @@ const CartListItem = ({ cart }) => {
       client.writeData({ data: { cartInfo } })
       await updateTotalAmount(client)
     } catch(err) {
-      // TODO: handle error
       // eslint-disable-next-line no-console
       console.warn(err)
+
+      notification.error({
+        message: t('Error'),
+        description: t('Something went wrong updating with your cart,' +
+          ' check your internet connection and try again')
+      })
     }
   }, 500)
 
@@ -76,9 +89,16 @@ const CartListItem = ({ cart }) => {
       client.writeData({ data: { cartInfo } })
       await updateTotalAmount(client)
     } catch (err) {
-      // TODO: handle error
       // eslint-disable-next-line no-console
       console.error(err)
+
+      notification.error({
+        message: t('Error'),
+        description: t(
+          'Something went wrong on removing cart item, ' +
+            'check your internet connection and try again',
+        ),
+      })
     }
   }
 

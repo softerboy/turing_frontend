@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types, camelcase */
 import React, { useContext, useEffect, useState } from 'react'
-import { Icon, Tabs, Card } from 'antd'
+import { Icon, Tabs, Card, notification } from 'antd'
 import { useApolloClient, useMutation, useQuery } from '@apollo/react-hooks'
 import { useTranslation } from 'react-i18next'
 import { Elements, StripeProvider } from 'react-stripe-elements'
@@ -88,8 +88,12 @@ const CheckoutTabs = ({ history }) => {
       setOrderSummary(summary)
     } catch (err) {
       // eslint-disable-next-line no-console
-      console.error(err)
-      // TODO: handle error
+      console.warn(err)
+
+      notification.error({
+        message: t('Error'),
+        description: err.message,
+      })
     }
   }
 
@@ -122,7 +126,8 @@ const CheckoutTabs = ({ history }) => {
         await removeCartData(client, emptyCart)
       } catch (err) {
         // eslint-disable-next-line no-console
-        console.error(err.message)
+        console.warn('An error occurred when removing cart data')
+        // do nothing
       } finally {
         setImmediate(() => {
           history.replace({
@@ -132,9 +137,15 @@ const CheckoutTabs = ({ history }) => {
         })
       }
     } catch (err) {
-      // TODO: handle checkout error
       // eslint-disable-next-line no-console
-      console.error(err)
+      console.warn(err)
+
+      notification.error({
+        message: t('Error'),
+        description: t(
+          'An error occurred on checkout, check your internet connection and try again',
+        ),
+      })
     } finally {
       setLoading(false)
     }

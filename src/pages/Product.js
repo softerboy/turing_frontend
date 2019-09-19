@@ -12,6 +12,7 @@ import ProductDetails from '../components/product/ProductDetails'
 import ReviewFormRenderer from '../components/product/review/ReviewFormRenderer'
 import ReviewListRenderer from '../components/product/review/ReviewListRenderer'
 import ProductDetailsPlaceholder from '../components/product/ProductDetailsPlaceholder'
+import ErrorRenderer from '../components/ErrorRenderer'
 
 const grid = {
   // prettier-ignore
@@ -28,7 +29,6 @@ const Product = ({ match }) => {
     variables: { product_id },
   })
 
-
   if (loading)
     return (
       <LayoutMain>
@@ -42,7 +42,13 @@ const Product = ({ match }) => {
       </LayoutMain>
     )
 
-  if (error) return <div>Ops ;-)</div>
+  if (error) {
+    return (
+      <LayoutMain>
+        <ErrorRenderer error={error} />
+      </LayoutMain>
+    )
+  }
 
   const pushReview = review => reviewListRef.current.pushReview(review)
 

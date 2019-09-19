@@ -9,6 +9,7 @@ import EmptySearchPlaceholder from './EmptySearchPlaceholder'
 import { searchTermFromQueryString } from '../../common/utils'
 import ProductGridLoadingPlaceholder from './ProductGridLoadingPlaceholder'
 import './ProductGridLoadingPlaceholder.less'
+import ErrorRenderer from '../ErrorRenderer'
 
 // eslint-disable-next-line react/prop-types
 const ProductGridRenderer = ({ onTotalChanged, variables, history }) => {
@@ -16,10 +17,7 @@ const ProductGridRenderer = ({ onTotalChanged, variables, history }) => {
 
   if (loading) return <ProductGridLoadingPlaceholder />
 
-  // TODO:
-  //  handle error
-  //  replace with error placeholder
-  if (error) return <div>Ops ;-)</div>
+  if (error) return <ErrorRenderer error={error} />
 
   const {
     products: {

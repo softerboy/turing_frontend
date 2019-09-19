@@ -1,7 +1,8 @@
 /* eslint-disable react/jsx-props-no-spreading, react/prop-types, react/destructuring-assignment */
 import React, { useRef } from 'react'
-import { Card, Col, Row, Typography } from 'antd'
+import { Button, Card, Col, Row, Typography } from 'antd'
 import { useTranslation } from 'react-i18next'
+import { withRouter } from 'react-router-dom'
 
 import PriceSelect from './PriceSelect'
 import CategorySelect from './CategorySelect'
@@ -27,6 +28,7 @@ const wrapWithTitle = (Component, title, props) => {
 
 const Filter = props => {
   const { t } = useTranslation()
+  const { history, match } = props
 
   const categorySelectRef = useRef(null)
   const colorSelectRef = useRef(null)
@@ -44,6 +46,11 @@ const Filter = props => {
     if (props.onChange) {
       setImmediate(() => props.onChange(getFilterData()))
     }
+  }
+
+  function onFilterClear() {
+    const { search } = history.location
+    if (search) history.push('/products')
   }
 
   const categoryProps = {
@@ -82,8 +89,19 @@ const Filter = props => {
       {wrapWithTitle(ColorSelect, t('Color'), colorProps)}
       {wrapWithTitle(SizeSelect, t('Size'), sizeProps)}
       {wrapWithTitle(PriceSelect, t('Price'), priceProps)}
+
+      <Button
+        shape="round"
+        size="large"
+        type="link"
+        icon="close"
+        onClick={onFilterClear}
+        block
+      >
+        {t('Clear All')}
+      </Button>
     </Card>
   )
 }
 
-export default Filter
+export default withRouter(Filter)

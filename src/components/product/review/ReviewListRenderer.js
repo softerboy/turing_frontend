@@ -4,12 +4,13 @@ import React, {
   useImperativeHandle,
   useState,
 } from 'react'
-import { Button } from 'antd'
+import { Button, Col, Row } from 'antd'
 import { useQuery } from '@apollo/react-hooks'
 import { useTranslation } from 'react-i18next'
 
 import ReviewList from './ReviewList'
 import PRODUCT_REVIEW_QUERY from '../../../graphql/product-review-query.graphql'
+import ReviewListPlaceholder from './ReviewListPlaceholder'
 
 const LOADING = 1
 const FETCH_MORE = 3
@@ -43,7 +44,15 @@ const ReviewListRenderer = (props, ref) => {
     }
   }, [data])
 
-  if (networkStatus === LOADING) return <div>Loading...</div>
+  if (networkStatus === LOADING) {
+    return (
+      <Row>
+        <Col md={{ span: 18, offset: 3 }}>
+          <ReviewListPlaceholder />
+        </Col>
+      </Row>
+    )
+  }
 
   if (error) return <div>Ops ;-)</div>
 

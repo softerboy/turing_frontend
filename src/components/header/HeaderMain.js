@@ -53,7 +53,7 @@ const HeaderMain = ({ titleOnly, history }) => {
 
   useEffect(() => {
     const value = searchTermFromQueryString(history.location.search)
-    if (value !== search) setSearch(value)
+    setSearch(value)
     // eslint-disable-next-line react/prop-types
   }, [history.location.search])
 

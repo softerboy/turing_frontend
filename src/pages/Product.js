@@ -11,6 +11,7 @@ import styles from './Pages.module.less'
 import ProductDetails from '../components/product/ProductDetails'
 import ReviewFormRenderer from '../components/product/review/ReviewFormRenderer'
 import ReviewListRenderer from '../components/product/review/ReviewListRenderer'
+import ProductDetailsPlaceholder from '../components/product/ProductDetailsPlaceholder'
 
 const grid = {
   // prettier-ignore
@@ -27,7 +28,19 @@ const Product = ({ match }) => {
     variables: { product_id },
   })
 
-  if (loading) return <div>Loading</div>
+
+  if (loading)
+    return (
+      <LayoutMain>
+        <Row className={styles.product}>
+          <Col xs={{ offset: 1, span: 22 }} md={{ offset: 2, span: 20 }}>
+            <Card>
+              <ProductDetailsPlaceholder />
+            </Card>
+          </Col>
+        </Row>
+      </LayoutMain>
+    )
 
   if (error) return <div>Ops ;-)</div>
 

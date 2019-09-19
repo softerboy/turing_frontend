@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import { withRouter } from 'react-router-dom'
 import { useQuery } from '@apollo/react-hooks'
+import { Card } from 'antd'
 
 import Filter from './Filter'
 import FILTER_QUERY from '../../graphql/filter-query.graphql'
@@ -9,6 +10,7 @@ import {
   filterToQueryString,
   filterPropsFromQueryString,
 } from '../../common/utils'
+import FilterPlaceholder from './FilterPlaceholder'
 
 const FilterRenderer = ({ history }) => {
   const { data, error, loading } = useQuery(FILTER_QUERY)
@@ -19,8 +21,13 @@ const FilterRenderer = ({ history }) => {
     setDefaultValues(values)
   }, [history.location.search])
 
-  // TODO: replace with loading component
-  if (loading) return <div>Loading</div>
+  if (loading) {
+    return (
+      <Card>
+        <FilterPlaceholder />
+      </Card>
+    )
+  }
 
   // TODO: replace with error placeholder component
   if (error) return <div>Ups :-( {JSON.stringify(error)}</div>

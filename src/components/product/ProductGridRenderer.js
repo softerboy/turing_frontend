@@ -14,7 +14,6 @@ import './ProductGridLoadingPlaceholder.less'
 const ProductGridRenderer = ({ onTotalChanged, variables, history }) => {
   const { data, error, loading } = useQuery(PRODUCTS_QUERY, { variables })
 
-  // TODO: replace with loading component
   if (loading) return <ProductGridLoadingPlaceholder />
 
   // TODO:

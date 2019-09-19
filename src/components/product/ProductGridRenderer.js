@@ -7,13 +7,15 @@ import ProductGrid from './ProductGrid'
 import PRODUCTS_QUERY from '../../graphql/products-query.graphql'
 import EmptySearchPlaceholder from './EmptySearchPlaceholder'
 import { searchTermFromQueryString } from '../../common/utils'
+import ProductGridLoadingPlaceholder from './ProductGridLoadingPlaceholder'
+import './ProductGridLoadingPlaceholder.less'
 
 // eslint-disable-next-line react/prop-types
 const ProductGridRenderer = ({ onTotalChanged, variables, history }) => {
   const { data, error, loading } = useQuery(PRODUCTS_QUERY, { variables })
 
   // TODO: replace with loading component
-  if (loading) return <div>Loading</div>
+  if (loading) return <ProductGridLoadingPlaceholder />
 
   // TODO:
   //  handle error

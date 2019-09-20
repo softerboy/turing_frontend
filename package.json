@@ -59,7 +59,7 @@
       "eslint ."
     ]
   },
-  "proxy": "http://localhost:3000",
+  "proxy": "http://localhost:3002",
   "devDependencies": {
     "@apollo/react-testing": "^3.0.0",
     "babel-plugin-import": "^1.12.0",

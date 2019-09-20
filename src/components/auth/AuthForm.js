@@ -96,6 +96,11 @@ const AuthForm = props => {
           </SubmitButton>
         </Item>
 
+        <div style={{ textAlign: 'center', width: '100%' }}>
+          <Text>{t('Or sign up using')}</Text>
+          <hr />
+        </div>
+
         {/* render bottom links */}
         <Item>{getBottom()}</Item>
       </Form>

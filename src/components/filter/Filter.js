@@ -28,7 +28,7 @@ const wrapWithTitle = (Component, title, props) => {
 
 const Filter = props => {
   const { t } = useTranslation()
-  const { history, match } = props
+  const { history } = props
 
   const categorySelectRef = useRef(null)
   const colorSelectRef = useRef(null)

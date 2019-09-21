@@ -86,6 +86,13 @@ type Mutation {
     shipping_region_id: Int!
     shipping_id: Int!
   ): String!
+
+  socialLogin(service: Social!, accessToken: String!): RegisterResponse
+}
+
+enum Social {
+  FACEBOOK
+  GOOGLE
 }
 
 type RegisterResponse {

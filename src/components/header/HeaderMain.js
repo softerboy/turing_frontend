@@ -167,10 +167,7 @@ const HeaderMain = ({ titleOnly, history }) => {
               />
 
               {isLoggedIn && (
-                <Dropdown
-                  overlay={menu(auth)}
-                  overlayStyle={{ zIndex: 99999999999999 }}
-                >
+                <Dropdown overlay={menu(auth)} overlayStyle={{ zIndex: 2000 }}>
                   <Button className={styles.user} type="link">
                     <Icon type="user" />
                   </Button>

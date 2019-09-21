@@ -1,8 +1,17 @@
 import React from 'react'
-import { Card, Form, Row, Typography } from 'antd'
+import { Card, Form, notification, Row, Typography } from 'antd'
 import { useTranslation } from 'react-i18next'
 import * as PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
+import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
+import { GoogleLogin } from 'react-google-login'
+import { useApolloClient, useMutation } from '@apollo/react-hooks'
+import {
+  FacebookLoginButton,
+  GoogleLoginButton,
+} from 'react-social-login-buttons'
+
+import SOCIAL_LOGIN_MUTATION from '../../graphql/social-login-mutation.graphql'
 
 import {
   getEmailField,
@@ -11,6 +20,7 @@ import {
   getUsernameField,
   SubmitButton,
 } from './common'
+import { USER_KEY } from '../../common/constants'
 
 const { Item } = Form
 const { Title, Text } = Typography
@@ -28,7 +38,9 @@ const AuthForm = props => {
     loading,
   } = props
   const { getFieldDecorator } = form
+  const client = useApolloClient()
   const { t } = useTranslation()
+  const [socialLogin] = useMutation(SOCIAL_LOGIN_MUTATION)
 
   const handleSubmit = e => {
     e.preventDefault()
@@ -56,6 +68,69 @@ const AuthForm = props => {
         <Link to={registerLink}>{t('Have an account')}</Link>
       </Row>
     )
+  }
+
+  async function onFacebookResponse(response) {
+    try {
+      const {
+        data: { socialLogin: auth },
+      } = await socialLogin({
+        variables: {
+          service: 'FACEBOOK',
+          accessToken: response.accessToken,
+        },
+      })
+
+      client.writeData({ data: { auth } })
+      // save token to localStorage
+      localStorage.setItem(USER_KEY, auth.accessToken)
+    } catch (err) {
+      notification.error({
+        title: t('Authentication failed'),
+        description: err.message,
+      })
+    }
+  }
+
+  function renderSocialButton(renderProps, type) {
+    const SocialButton =
+      type === 'facebook' ? FacebookLoginButton : GoogleLoginButton
+    return (
+      <SocialButton
+        style={{ width: 230, margin: '15px auto' }}
+        onClick={renderProps.onClick}
+        size="42px"
+        iconSize="18px"
+      />
+    )
+  }
+
+  async function onGoogleResponse(response) {
+    try {
+      const {
+        data: { socialLogin: auth },
+      } = await socialLogin({
+        variables: {
+          service: 'GOOGLE',
+          accessToken: response.accessToken,
+        },
+      })
+
+      client.writeData({ data: { auth } })
+      // save token to localStorage
+      localStorage.setItem(USER_KEY, auth.accessToken)
+    } catch (err) {
+      notification.error({
+        message: t('Authentication failed'),
+        description: err.message,
+      })
+    }
+  }
+
+  function onGoogleFailure() {
+    notification.error({
+      message: t('Authentication failed'),
+    })
   }
 
   return (
@@ -96,14 +171,27 @@ const AuthForm = props => {
           </SubmitButton>
         </Item>
 
-        <div style={{ textAlign: 'center', width: '100%' }}>
-          <Text>{t('Or sign up using')}</Text>
-          <hr />
-        </div>
-
         {/* render bottom links */}
         <Item>{getBottom()}</Item>
       </Form>
+
+      <div style={{ textAlign: 'center', width: '100%' }}>
+        <FacebookLogin
+          appId={process.env.REACT_APP_FACEBOOK_ID}
+          autoLoad={false}
+          fields="name,email,picture"
+          callback={onFacebookResponse}
+          render={renderProp => renderSocialButton(renderProp, 'facebook')}
+        />
+
+        <GoogleLogin
+          clientId={process.env.REACT_APP_GOOGLE_ID}
+          buttonText="Login"
+          onSuccess={onGoogleResponse}
+          onFailure={onGoogleFailure}
+          render={renderProp => renderSocialButton(renderProp, 'google')}
+        />
+      </div>
     </Card>
   )
 }

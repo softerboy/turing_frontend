@@ -28,7 +28,7 @@ const wrapWithTitle = (Component, title, props) => {
 
 const Filter = props => {
   const { t } = useTranslation()
-  const { history } = props
+  const { history, hideHeader } = props
 
   const categorySelectRef = useRef(null)
   const colorSelectRef = useRef(null)
@@ -84,7 +84,10 @@ const Filter = props => {
   }
 
   return (
-    <Card title="Filter">
+    <Card
+      title={t('Filter')}
+      headStyle={{ display: hideHeader ? 'none' : 'block' }}
+    >
       {wrapWithTitle(CategorySelect, t('Category'), categoryProps)}
       {wrapWithTitle(ColorSelect, t('Color'), colorProps)}
       {wrapWithTitle(SizeSelect, t('Size'), sizeProps)}

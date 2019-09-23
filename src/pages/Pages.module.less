@@ -1,9 +1,29 @@
 .product {
-	margin-top: 16px;
+  margin-top: 16px;
 }
 
-@media screen and (max-width: 630px) {
-	.product {
-		margin-top: 66px;
-	}
+.filterButton {
+  padding: 10px;
+  border-radius: 0 4px 4px 0;
+  background-color: @primary-color;
+  position: fixed;
+  top: 50%;
+  left: 0;
+  z-index: 999;
+  cursor: pointer;
+  color: #ffffff;
+  font-size: 1.2em;
+
+  display: none;
+}
+
+.filterDrawer {
+  display: none;
+}
+
+@media screen and (max-width: 992px) {
+  .filterDrawer,
+  .filterButton {
+    display: block;
+  }
 }

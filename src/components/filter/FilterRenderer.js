@@ -13,7 +13,7 @@ import {
 import FilterPlaceholder from './FilterPlaceholder'
 import ErrorRenderer from '../ErrorRenderer'
 
-const FilterRenderer = ({ history }) => {
+const FilterRenderer = ({ history, hideHeader }) => {
   const { data, error, loading } = useQuery(FILTER_QUERY)
   const [defaultValues, setDefaultValues] = useState({})
 
@@ -46,6 +46,7 @@ const FilterRenderer = ({ history }) => {
     <Filter
       {...data}
       {...defaultValues}
+      hideHeader={hideHeader}
       categories={categories}
       onChange={handleFilterChange}
     />

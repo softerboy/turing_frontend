@@ -6,6 +6,7 @@ import * as PropTypes from 'prop-types'
 import HeaderMain from '../header/HeaderMain'
 import PreHeader from '../header/PreHeader'
 import { AppContext } from '../context/AppContext'
+import FooterMain from '../footer/FooterMain'
 
 const { Header, Content, Footer } = Layout
 
@@ -40,7 +41,13 @@ const LayoutMain = props => {
           </Col>
         </Row>
       </Content>
-      <Footer />
+      <Footer style={{ backgroundColor: 'white' }}>
+        <Row>
+          <Col xs={{ span: 22, offset: 1 }}>
+            <FooterMain />
+          </Col>
+        </Row>
+      </Footer>
     </Layout>
   )
 }

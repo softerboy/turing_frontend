@@ -1,9 +1,10 @@
 import { useQuery } from '@apollo/react-hooks'
-import { useEffect } from 'react'
+import React, { useEffect } from 'react'
 
 import ME_QUERY from '../graphql/me-query.graphql'
 import CART_QUERY from '../graphql/cart-query.graphql'
 import { getCartId } from '../common/utils'
+import FullPageLoader from './FullPageLoader'
 
 // renders loader placeholder component
 // during application boots
@@ -27,7 +28,7 @@ const Boot = ({ children }) => {
 
   if (error) return children
 
-  if (loading) return null
+  if (loading) return <FullPageLoader />
 
   const { me } = data
   client.cache.writeData({ data: { auth: me } })

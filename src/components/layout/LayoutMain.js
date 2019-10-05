@@ -20,7 +20,7 @@ const LayoutMain = props => {
      *  we will hide pre-header if current page is
      *  login/register page or user is already logged in
      */
-    <Layout>
+    <Layout style={{ textAlign: 'left' }}>
       <div
         style={{
           position: 'sticky',

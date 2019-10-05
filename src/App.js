@@ -3,19 +3,22 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import ApolloClient, { InMemoryCache } from 'apollo-boost'
 import { ApolloProvider } from 'react-apollo'
 
-import Home from './pages/Home'
 // eslint-disable-next-line
-import Auth from './pages/Auth'
 import PrivateRoute from './components/auth/PrivateRoute'
 import AppProvider from './components/context/AppContext'
 import data from './local-state'
 import resolvers from './resolvers'
 import Boot from './components/Boot'
 import { USER_KEY } from './common/constants'
-import Product from './pages/Product'
-import Checkout from './pages/Checkout'
-import ThankYou from './pages/ThankYou'
-import NotFound from './pages/NotFound'
+import {
+  Auth,
+  Checkout,
+  NotFound,
+  ThankYou,
+  Product,
+  Home,
+  // eslint-disable-next-line import/named
+} from './pages/Index'
 
 const cache = new InMemoryCache()
 cache.writeData({ data })

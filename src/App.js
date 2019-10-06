@@ -19,6 +19,7 @@ import {
   Home,
   // eslint-disable-next-line import/named
 } from './pages/Index'
+import ScrollToTop from './components/ScrollToTop'
 
 const cache = new InMemoryCache()
 cache.writeData({ data })
@@ -41,30 +42,32 @@ const App = () => (
     <Boot>
       <AppProvider>
         <BrowserRouter>
-          <Switch>
-            <Route
-              exact
-              name="home"
-              path={['/', '/home', '/index', '/products']}
-              component={Home}
-            />
-            {/*
-              The role of key prop is clear (i.e. rerender)
-              login ind register form fields in every page transition.
-              Without it forms same fields value keeps their
-              value between page transition
-            */}
-            <Route exact name="login" path="/login">
-              <Auth key="login" />
-            </Route>
-            <Route exact name="register" path="/register">
-              <Auth key="register" register />
-            </Route>
-            <PrivateRoute exact path="/checkout" component={Checkout} />
-            <Route exact path="/product/:product_id" component={Product} />
-            <Route exact path="/thankyou" component={ThankYou} />
-            <Route path={['/404', '*']} component={NotFound} />
-          </Switch>
+          <ScrollToTop>
+            <Switch>
+              <Route
+                exact
+                name="home"
+                path={['/', '/home', '/index', '/products']}
+                component={Home}
+              />
+              {/*
+                The role of key prop is clear (i.e. rerender)
+                login ind register form fields in every page transition.
+                Without it forms same fields value keeps their
+                value between page transition
+              */}
+              <Route exact name="login" path="/login">
+                <Auth key="login" />
+              </Route>
+              <Route exact name="register" path="/register">
+                <Auth key="register" register />
+              </Route>
+              <PrivateRoute exact path="/checkout" component={Checkout} />
+              <Route exact path="/product/:product_id" component={Product} />
+              <Route exact path="/thankyou" component={ThankYou} />
+              <Route path={['/404', '*']} component={NotFound} />
+            </Switch>
+          </ScrollToTop>
         </BrowserRouter>
       </AppProvider>
     </Boot>

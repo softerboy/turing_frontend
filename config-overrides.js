@@ -1,5 +1,10 @@
-// eslint-disable-next-line
-const { override, fixBabelImports, addLessLoader } = require('customize-cra')
+const {
+  override,
+  fixBabelImports,
+  addLessLoader,
+  addBabelPlugin,
+  // eslint-disable-next-line
+} = require('customize-cra')
 const themeVars = require('./src/theme/variables')
 
 const addGraphqlLoader = () => config => {
@@ -16,6 +21,9 @@ const addGraphqlLoader = () => config => {
 
 module.exports = {
   webpack: override(
+    process.env.NODE_ENV === 'production' &&
+      addBabelPlugin('babel-plugin-transform-react-remove-prop-types'),
+
     fixBabelImports('import', {
       libraryName: 'antd',
       libraryDirectory: 'es',

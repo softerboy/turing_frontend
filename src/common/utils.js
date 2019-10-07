@@ -8,6 +8,7 @@ import qs from 'query-string'
 
 import { CART_ID_KEY } from './constants'
 import GENERATE_CART_ID_QUERY from '../graphql/cart-id-query.graphql'
+import TOTAL_AMOUNT_QUERY from '../graphql/total-amount-query.graphql'
 
 const arrayFormat = 'comma'
 const parseNumbers = true
@@ -140,4 +141,18 @@ export const removeCartData = async (client, mutate) => {
   // prettier-ignore
   const { data: { cart: cartInfo } } = await mutate({ variables: { cart_id } })
   client.writeData({ data: { cartInfo, cartTotalAmount: 0.0 } })
+}
+
+export const updateTotalAmount = async client => {
+  // eslint-disable-next-line camelcase
+  const cart_id = await getCartId(client)
+  const { data } = await client.query({
+    query: TOTAL_AMOUNT_QUERY,
+    variables: { cart_id },
+    fetchPolicy: 'network-only',
+  })
+
+  if (data && data.totalAmount) {
+    client.writeData({ data: { cartTotalAmount: data.totalAmount } })
+  }
 }

@@ -19,9 +19,8 @@ import { AppContext } from '../context/AppContext'
 import Counter from '../Counter'
 import styles from './CartListItem.module.less'
 import UPDATE_CART_MUTATION from '../../graphql/update-cart-mutation.graphql'
-import TOTAL_AMOUNT_QUERY from '../../graphql/total-amount-query.graphql'
 import REMOVE_CART_ITEM_MUTATION from '../../graphql/remove-cart-item-mutation.graphql'
-import { getCartId } from '../../common/utils'
+import { updateTotalAmount } from '../../common/utils'
 
 const { Item } = List
 const { Text } = Typography
@@ -32,20 +31,6 @@ const grid = {
   attrs: { xs: { span: 16 }, md: { span: 5 } },
   counter: { xs: { span: 16 }, md: { span: 5 } },
   subtotal: { xs: { span: 16 }, md: { span: 3 } },
-}
-
-async function updateTotalAmount(client) {
-  // eslint-disable-next-line camelcase
-  const cart_id = await getCartId(client)
-  const { data } = await client.query({
-    query: TOTAL_AMOUNT_QUERY,
-    variables: { cart_id },
-    fetchPolicy: 'network-only',
-  })
-
-  if (data && data.totalAmount) {
-    client.writeData({ data: { cartTotalAmount: data.totalAmount } })
-  }
 }
 
 /* eslint-disable camelcase */
